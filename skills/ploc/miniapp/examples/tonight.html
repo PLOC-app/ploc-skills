@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="ploc:name" content="Ce soir, on boit quoi ?">
+<meta name="ploc:icon" content="puzzle">
+<title>Ce soir, on boit quoi ?</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+        font-family: -apple-system, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f0eb;
+        color: #2c2c2c;
+    }
+
+    h1 { color: #7b2d42; margin: 0 0 4px; font-size: 1.4rem; }
+    h2 { color: #5a1f30; margin: 24px 0 8px; font-size: .85rem; text-transform: uppercase; letter-spacing: 1px; }
+    .subtitle { margin: 0 0 20px; color: #777; font-size: .9rem; }
+
+    .card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .options { display: flex; gap: 16px; margin-bottom: 16px; font-size: .95rem; }
+    .options label { display: flex; align-items: center; gap: 6px; }
+    select { font: inherit; padding: 6px 8px; border-radius: 6px; border: 1px solid #d8cfc7; background: #fff; }
+
+    button {
+        font: inherit;
+        border: 0;
+        border-radius: 8px;
+        padding: 12px 16px;
+        cursor: pointer;
+        background: #7b2d42;
+        color: #fff;
+    }
+    button.secondary { background: #ece3dc; color: #5a1f30; }
+    button:disabled { opacity: .5; }
+    .actions { display: flex; gap: 8px; margin-top: 16px; }
+    .actions button { flex: 1; }
+
+    .pick { text-align: center; padding: 8px 0; }
+    .pick .name { font-size: 1.3rem; font-weight: 600; color: #5a1f30; }
+    .pick .meta { margin-top: 6px; color: #777; }
+    .empty { text-align: center; color: #999; }
+
+    ul { list-style: none; margin: 0; padding: 0; }
+    li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-size: .9rem; }
+    li:last-child { border-bottom: 0; }
+    li span:last-child { color: #999; }
+</style>
+</head>
+<body>
+    <h1>🍷 Ce soir, on boit quoi ?</h1>
+    <p class="subtitle" id="summary">Chargement de la cave…</p>
+
+    <div class="card">
+        <div class="options">
+            <label>Couleur <select id="color"><option value="">Toutes</option></select></label>
+        </div>
+
+        <div class="pick" id="pick"><div class="empty">Appuie sur « Tirer au sort »</div></div>
+
+        <div class="actions">
+            <button id="draw">Tirer au sort</button>
+            <button id="open" class="secondary" disabled>Voir la fiche</button>
+        </div>
+    </div>
+
+    <h2>Derniers tirages</h2>
+    <div class="card"><ul id="history"></ul></div>
+
+<script>
+const HISTORY_KEY = "tonight.history";
+const HISTORY_SIZE = 5;
+
+let current = null;
+const colorByWine = new Map();
+
+const $ = id => document.getElementById(id);
+
+function renderPick(wine) {
+    $("pick").innerHTML = `
+        <div class="name"></div>
+        <div class="meta"></div>`;
+    $("pick").querySelector(".name").textContent = wine.name;
+    $("pick").querySelector(".meta").textContent =
+        [wine.vintage || null, wine.bottles + " bouteille(s)"].filter(Boolean).join(" · ");
+    $("open").disabled = false;
+}
+
+async function renderHistory() {
+    const history = await sdk.storage.get(HISTORY_KEY, []);
+    $("history").innerHTML = "";
+    if (!history.length) {
+        $("history").innerHTML = '<li class="empty">Aucun tirage pour le moment</li>';
+        return;
+    }
+    for (const item of history) {
+        const li = document.createElement("li");
+        const name = document.createElement("span");
+        const date = document.createElement("span");
+        name.textContent = item.name;
+        date.textContent = new Date(item.date).toLocaleDateString("fr-FR");
+        li.append(name, date);
+        $("history").append(li);
+    }
+}
+
+async function loadColors() {
+    const wines = (await sdk.cellar.wine.getAll()).toArray().filter(w => w.bottles > 0);
+    const names = new Set();
+    for (const wine of wines) {
+        const color = await wine.getColor();
+        colorByWine.set(wine.id, color?.name ?? "");
+        if (color) {
+            names.add(color.name);
+        }
+    }
+    for (const name of [...names].sort()) {
+        $("color").add(new Option(name, name));
+    }
+}
+
+async function draw() {
+    const all = (await sdk.cellar.wine.getAll()).toArray();
+    let candidates = all.filter(w => w.bottles > 0);
+    if ($("color").value) {
+        candidates = candidates.filter(w => colorByWine.get(w.id) === $("color").value);
+    }
+
+    if (!candidates.length) {
+        await sdk.dialog.alert("Aucun vin ne correspond à ces critères.");
+        return;
+    }
+
+    current = candidates[Math.floor(Math.random() * candidates.length)];
+    renderPick(current);
+
+    const history = await sdk.storage.get(HISTORY_KEY, []);
+    history.unshift({ id: current.id, name: current.name, date: Date.now() });
+    await sdk.storage.set(HISTORY_KEY, history.slice(0, HISTORY_SIZE));
+    await renderHistory();
+}
+
+async function init() {
+    if (typeof sdk === "undefined") {
+        $("summary").textContent = "SDK PLOC indisponible : ouvre cette page depuis l'app.";
+        $("draw").disabled = true;
+        return;
+    }
+
+    const info = await sdk.cellar.getInfo();
+    $("summary").textContent = info.empty
+        ? "Ta cave est vide."
+        : `${info.counts.bottles} bouteilles · ${info.counts.wines} vins`;
+    $("draw").disabled = info.empty;
+
+    $("draw").addEventListener("click", draw);
+    $("open").addEventListener("click", () => current && sdk.ui.openWine({ id: current.id }));
+    await renderHistory();
+    await loadColors();
+}
+
+init();
+</script>
+</body>
+</html>

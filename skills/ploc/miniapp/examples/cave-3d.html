@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="ploc:name" content="Cave 3D">
+<meta name="ploc:icon" content="cube-3d">
+<title>Cave 3D</title>
+<style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body { height: 100%; margin: 0; }
+
+    body {
+        font-family: -apple-system, Arial, sans-serif;
+        background: #1c1417;
+        color: #f5f0eb;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        padding-top: max(12px, env(safe-area-inset-top));
+    }
+    header h1 { margin: 0; font-size: 1.1rem; flex: 1; }
+    header .count { font-size: .85rem; color: #b9a9ae; }
+
+    select {
+        font: inherit;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 0;
+        background: #3a2a30;
+        color: inherit;
+    }
+
+    #stage { flex: 1; position: relative; min-height: 0; }
+    #stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+
+    #hint {
+        position: absolute; left: 0; right: 0; top: 8px;
+        text-align: center; font-size: .8rem; color: #b9a9ae;
+        pointer-events: none;
+    }
+
+    #card {
+        position: absolute;
+        left: 16px; right: 16px;
+        bottom: max(16px, env(safe-area-inset-bottom));
+        background: #f5f0eb;
+        color: #2c2c2c;
+        border-radius: 12px;
+        padding: 14px 16px;
+        display: none;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,.4);
+    }
+    #card.visible { display: flex; }
+    #card .swatch { width: 14px; align-self: stretch; border-radius: 7px; }
+    #card .text { flex: 1; min-width: 0; }
+    #card .name { font-weight: 600; color: #5a1f30; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #card .meta { font-size: .85rem; color: #777; margin-top: 2px; }
+    #card button {
+        font: inherit; border: 0; border-radius: 8px;
+        padding: 10px 14px; cursor: pointer;
+        background: #7b2d42; color: #fff;
+    }
+
+    #message {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center; padding: 24px; color: #b9a9ae;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <h1>🍾 Cave 3D</h1>
+        <span class="count" id="count"></span>
+        <select id="rackSelect" aria-label="Rack"></select>
+    </header>
+
+    <div id="stage">
+        <div id="message">Chargement de la cave…</div>
+        <div id="hint">Glisse pour tourner · pince pour zoomer · touche une bouteille</div>
+        <div id="card">
+            <div class="swatch" id="cardSwatch"></div>
+            <div class="text">
+                <div class="name" id="cardName"></div>
+                <div class="meta" id="cardMeta"></div>
+            </div>
+            <button id="cardOpen">Voir la fiche</button>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const DEFAULT_COLOR = "#7b2d42";
+const GRID_DIRECTION = { REVERSE_X: 2, REVERSE_Y: 3, REVERSE_XY: 4 };
+
+const $ = id => document.getElementById(id);
+
+// ---------- Données ----------
+
+// Format commun : [{ name, rows, columns, direction, items: [{ row, column, wine: { id, name, vintage, color } }] }]
+
+async function loadRacksFromSdk() {
+    const colorCache = new Map();
+
+    async function colorOf(wine) {
+        if (!wine.colorId) {
+            return DEFAULT_COLOR;
+        }
+        if (!colorCache.has(wine.colorId)) {
+            const color = await wine.getColor();
+            colorCache.set(wine.colorId, color?.hex ?? DEFAULT_COLOR);
+        }
+        return colorCache.get(wine.colorId);
+    }
+
+    const racks = [];
+    for (const rack of (await sdk.cellar.rack.getAll()).toArray()) {
+        const items = [];
+        for (const item of rack.rackItems ?? []) {
+            if (item.isNotEmpty() && !item.isDeleted()) {
+                const wine = item.wine;
+                items.push({
+                    row: item.row,
+                    column: item.column,
+                    wine: { id: wine.id, name: wine.name, vintage: wine.vintage, color: await colorOf(wine) }
+                });
+            }
+        }
+        racks.push({
+            name: rack.name,
+            rows: rack.rows,
+            columns: rack.columns,
+            direction: rack.gridDirection,
+            items
+        });
+    }
+    return racks;
+}
+
+function demoRacks() {
+    const wines = [
+        ["Château Margaux", 2015, "#7b2d42"], ["Meursault", 2019, "#e6d27a"],
+        ["Sancerre", 2021, "#eadf9a"], ["Tavel", 2022, "#e58a8a"],
+        ["Pommard", 2017, "#6a2236"], ["Chablis", 2020, "#efe4a0"],
+        ["Hermitage", 2016, "#4f1a2a"], ["Champagne brut", 2012, "#f0dc8c"]
+    ];
+    const items = [];
+    for (let row = 0; row < 5; row++) {
+        for (let column = 0; column < 6; column++) {
+            if (Math.random() < 0.25) {
+                continue;
+            }
+            const [name, vintage, color] = wines[Math.floor(Math.random() * wines.length)];
+            items.push({ row, column, wine: { id: null, name, vintage, color } });
+        }
+    }
+    return [
+        { name: "Casier démo", rows: 5, columns: 6, direction: 1, items },
+        { name: "Petit casier démo", rows: 3, columns: 4, direction: 1, items: items.filter(i => i.row < 3 && i.column < 4) }
+    ];
+}
+
+// ---------- Scène ----------
+
+const stage = $("stage");
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+stage.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1c1417);
+
+const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.maxPolarAngle = Math.PI * 0.85;
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x3a2a30, 0.8));
+const sun = new THREE.DirectionalLight(0xffffff, 0.9);
+sun.position.set(4, 8, 10);
+scene.add(sun);
+
+const PITCH = 1;
+const BODY_R = 0.38;
+const BODY_LEN = 1.45;
+const NECK_LEN = 0.5;
+const DEPTH = BODY_LEN + NECK_LEN + 0.1;
+
+// Bouteille couchée le long de z : le cul vers l'avant (z+), le goulot vers l'arrière.
+const bodyGeometry = new THREE.CylinderGeometry(BODY_R, BODY_R, BODY_LEN, 24).rotateX(Math.PI / 2);
+bodyGeometry.translate(0, 0, BODY_LEN / 2 - DEPTH / 2 + NECK_LEN + 0.05);
+const neckGeometry = new THREE.CylinderGeometry(0.09, 0.17, NECK_LEN, 16).rotateX(Math.PI / 2);
+neckGeometry.translate(0, 0, -DEPTH / 2 + NECK_LEN / 2 + 0.05);
+const woodMaterial = new THREE.MeshStandardMaterial({ color: 0x6b4a36, roughness: 0.8 });
+const backMaterial = new THREE.MeshStandardMaterial({ color: 0x2a1d20, roughness: 1 });
+const glassMaterials = new Map();
+
+function glassMaterial(color) {
+    if (!glassMaterials.has(color)) {
+        glassMaterials.set(color, new THREE.MeshStandardMaterial({ color, roughness: 0.35, metalness: 0.2 }));
+    }
+    return glassMaterials.get(color);
+}
+
+const selector = new THREE.Mesh(
+    new THREE.TorusGeometry(BODY_R + 0.06, 0.03, 8, 32),
+    new THREE.MeshBasicMaterial({ color: 0xffd36b })
+);
+selector.visible = false;
+
+let rackGroup = null;
+let bottles = [];
+let selected = null;
+
+function disposeRackGroup() {
+    if (!rackGroup) {
+        return;
+    }
+    scene.remove(rackGroup);
+    rackGroup.traverse(o => {
+        if (o.isMesh && o.userData.ownGeometry) {
+            o.geometry.dispose();
+        }
+    });
+}
+
+function cellPosition(rack, row, column) {
+    const x = rack.direction === GRID_DIRECTION.REVERSE_X || rack.direction === GRID_DIRECTION.REVERSE_XY
+        ? rack.columns - 1 - column
+        : column;
+    const y = rack.direction === GRID_DIRECTION.REVERSE_Y || rack.direction === GRID_DIRECTION.REVERSE_XY
+        ? row
+        : rack.rows - 1 - row;
+    return [(x - (rack.columns - 1) / 2) * PITCH, (y - (rack.rows - 1) / 2) * PITCH];
+}
+
+function box(w, h, d, material, x, y, z) {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+    mesh.position.set(x, y, z);
+    mesh.userData.ownGeometry = true;
+    return mesh;
+}
+
+function showRack(rack) {
+    disposeRackGroup();
+    hideCard();
+    bottles = [];
+    rackGroup = new THREE.Group();
+
+    const w = rack.columns * PITCH;
+    const h = rack.rows * PITCH;
+    const t = 0.08;
+
+    rackGroup.add(box(w + t, h + t, 0.05, backMaterial, 0, 0, -DEPTH / 2));
+    for (let c = 0; c <= rack.columns; c++) {
+        rackGroup.add(box(t, h + t, DEPTH, woodMaterial, (c - rack.columns / 2) * PITCH, 0, 0));
+    }
+    for (let r = 0; r <= rack.rows; r++) {
+        rackGroup.add(box(w + t, t, DEPTH, woodMaterial, 0, (r - rack.rows / 2) * PITCH, 0));
+    }
+
+    for (const item of rack.items) {
+        const [x, y] = cellPosition(rack, item.row, item.column);
+        const bottle = new THREE.Group();
+        bottle.position.set(x, y, 0);
+        const material = glassMaterial(item.wine.color);
+        bottle.add(new THREE.Mesh(bodyGeometry, material), new THREE.Mesh(neckGeometry, material));
+        bottle.userData = { item };
+        rackGroup.add(bottle);
+        bottles.push(bottle);
+    }
+
+    selector.visible = false;
+    rackGroup.add(selector);
+    scene.add(rackGroup);
+
+    const size = Math.max(w, h);
+    const distance = size / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2))) * 1.5 + DEPTH;
+    camera.position.set(size * 0.35, size * 0.2, distance);
+    controls.target.set(0, 0, 0);
+    controls.update();
+
+    $("count").textContent = rack.items.length + " / " + rack.rows * rack.columns;
+}
+
+// ---------- Sélection ----------
+
+const raycaster = new THREE.Raycaster();
+
+function selectBottle(bottle) {
+    selected = bottle;
+    selector.position.copy(bottle.position);
+    selector.position.z = DEPTH / 2 - 0.1;
+    selector.visible = true;
+    showCard(bottle.userData.item);
+}
+
+function showCard(item) {
+    $("cardSwatch").style.background = item.wine.color;
+    $("cardName").textContent = item.wine.name;
+    $("cardMeta").textContent = [item.wine.vintage || null, "ligne " + (item.row + 1) + " · colonne " + (item.column + 1)]
+        .filter(Boolean).join(" · ");
+    $("cardOpen").style.display = item.wine.id ? "" : "none";
+    $("card").classList.add("visible");
+}
+
+function hideCard() {
+    selected = null;
+    selector.visible = false;
+    $("card").classList.remove("visible");
+}
+
+// Distingue un toucher d'un glisser (rotation).
+let downAt = null;
+renderer.domElement.addEventListener("pointerdown", e => { downAt = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener("pointerup", e => {
+    if (!downAt || Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 6) {
+        return;
+    }
+
+    const rect = renderer.domElement.getBoundingClientRect();
+    raycaster.setFromCamera({
+        x: ((e.clientX - rect.left) / rect.width) * 2 - 1,
+        y: -((e.clientY - rect.top) / rect.height) * 2 + 1
+    }, camera);
+
+    const hit = raycaster.intersectObjects(bottles, true)[0];
+    if (!hit) {
+        hideCard();
+        return;
+    }
+
+    let node = hit.object;
+    while (node && !node.userData.item) {
+        node = node.parent;
+    }
+    selectBottle(node);
+});
+
+$("cardOpen").addEventListener("click", () => {
+    const id = selected?.userData.item.wine.id;
+    if (id) {
+        sdk.ui.openWine({ id });
+    }
+});
+
+// ---------- Boucle ----------
+
+function resize() {
+    const { clientWidth: w, clientHeight: h } = stage;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+}
+window.addEventListener("resize", resize);
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+async function init() {
+    resize();
+    animate();
+
+    let racks;
+    try {
+        racks = typeof sdk === "undefined" ? demoRacks() : await loadRacksFromSdk();
+    } catch (e) {
+        $("message").textContent = "Impossible de lire la cave : " + e.message;
+        return;
+    }
+
+    if (!racks.length) {
+        $("message").textContent = "Aucun rack dans ta cave.";
+        return;
+    }
+
+    $("message").remove();
+    for (const [i, rack] of racks.entries()) {
+        $("rackSelect").add(new Option(rack.name, i));
+    }
+    $("rackSelect").addEventListener("change", () => showRack(racks[$("rackSelect").value]));
+    showRack(racks[0]);
+}
+
+init();
+</script>
+</body>
+</html>

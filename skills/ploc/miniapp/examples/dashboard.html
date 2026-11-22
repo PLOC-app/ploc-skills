@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="ploc:name" content="Tableau de bord">
+<meta name="ploc:icon" content="stats">
+<title>Tableau de bord</title>
+<style>
+    :root {
+        color-scheme: light dark;
+        --bg: #f5f0eb;
+        --card: #fff;
+        --text: #2c2c2c;
+        --muted: #777;
+        --accent: #7b2d42;
+        --accent-2: #c9a24b;
+        --line: #eee;
+        --bar-bg: #f1e9e3;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg: #1c1a1b;
+            --card: #2a2627;
+            --text: #f1ecea;
+            --muted: #a39b98;
+            --accent: #d0657f;
+            --accent-2: #d9b866;
+            --line: #3a3536;
+            --bar-bg: #3a3536;
+        }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+        font-family: -apple-system, system-ui, Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        padding-bottom: calc(24px + env(safe-area-inset-bottom));
+        background: var(--bg);
+        color: var(--text);
+    }
+
+    h1 { color: var(--accent); margin: 0 0 4px; font-size: 1.4rem; }
+    h2 { margin: 0 0 12px; font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+    .subtitle { margin: 0 0 16px; color: var(--muted); font-size: .9rem; }
+    .banner { background: var(--accent-2); color: #2c2c2c; border-radius: 8px; padding: 8px 12px; font-size: .85rem; margin-bottom: 16px; }
+
+    .toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+    select { font: inherit; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+
+    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+    .kpi { background: var(--card); border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 6px rgba(0, 0, 0, .08); }
+    .kpi .value { font-size: 1.35rem; font-weight: 700; color: var(--accent); overflow-wrap: anywhere; }
+    .kpi .label { font-size: .8rem; color: var(--muted); margin-top: 2px; }
+
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 720px) {
+        .kpis { grid-template-columns: repeat(5, 1fr); }
+        .grid { grid-template-columns: 1fr 1fr; }
+        .wide { grid-column: 1 / -1; }
+    }
+
+    .card { background: var(--card); border-radius: 12px; padding: 18px; box-shadow: 0 2px 6px rgba(0, 0, 0, .08); min-width: 0; }
+    .empty { color: var(--muted); font-size: .9rem; text-align: center; padding: 8px 0; }
+    .note { color: var(--muted); font-size: .78rem; margin: 10px 0 0; }
+
+    .hbar { display: grid; grid-template-columns: minmax(70px, 34%) 1fr auto; gap: 8px; align-items: center; font-size: .85rem; padding: 4px 0; }
+    .hbar .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hbar .track { height: 10px; border-radius: 5px; background: var(--bar-bg); overflow: hidden; }
+    .hbar .fill { height: 100%; background: var(--accent); border-radius: 5px; }
+    .hbar .num { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .chart { display: flex; align-items: flex-end; gap: 6px; height: 150px; overflow-x: auto; padding-bottom: 2px; }
+    .col { flex: 1 0 28px; display: flex; flex-direction: column; align-items: center; height: 100%; }
+    .bars { flex: 1; width: 100%; display: flex; align-items: flex-end; justify-content: center; gap: 2px; }
+    .bar { flex: 1; max-width: 16px; min-height: 1px; border-radius: 3px 3px 0 0; background: var(--accent); }
+    .bar.b { background: var(--accent-2); }
+    .tick { font-size: .68rem; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+    .legend { display: flex; gap: 14px; font-size: .78rem; color: var(--muted); margin-top: 10px; }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; background: var(--accent); }
+    .dot.b { background: var(--accent-2); }
+
+    ul { list-style: none; margin: 0; padding: 0; }
+    li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+    li:last-child { border-bottom: 0; }
+    li button { all: unset; cursor: pointer; text-align: left; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    li .meta { color: var(--muted); white-space: nowrap; }
+</style>
+</head>
+<body>
+    <h1>Tableau de bord</h1>
+    <p class="subtitle" id="summary">Chargement…</p>
+    <div id="banner"></div>
+
+    <div class="toolbar">
+        <label>Période <select id="period"></select></label>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="grid">
+        <div class="card wide"><h2>Bouteilles achetées et bues</h2><div id="flow"></div></div>
+        <div class="card wide"><h2>Dépenses</h2><div id="spend"></div></div>
+        <div class="card"><h2>Cave par couleur</h2><div id="colors"></div></div>
+        <div class="card"><h2>Cave par région</h2><div id="regions"></div></div>
+        <div class="card"><h2>Cave par millésime</h2><div id="vintages"></div></div>
+        <div class="card"><h2>Occasions</h2><div id="occasions"></div></div>
+        <div class="card"><h2>Fournisseurs</h2><div id="vendors"></div></div>
+        <div class="card"><h2>À boire</h2><div id="drink"></div></div>
+    </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const LOCALE = "fr-FR";
+const NUMBER = new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 0 });
+const MONTHS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+const OCCASIONS = {
+    0: "Sans occasion", 1: "Plaisir", 2: "Fête", 4: "Cadeau", 8: "Vente", 16: "Perte",
+    32: "Vindredi", 64: "Sans raison", 128: "Inventaire", 200: "Covid"
+};
+const TOP = 8;
+
+let data = null;
+
+/* ---------- Helpers ---------- */
+
+function el(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;   // textContent: names are user-written
+    return node;
+}
+
+function money(value, currency) {
+    if (value === null || value === undefined) return "–";
+    try {
+        if (currency && /^[A-Za-z]{3}$/.test(currency)) {
+            return new Intl.NumberFormat(LOCALE, { style: "currency", currency, maximumFractionDigits: 0 }).format(value);
+        }
+    } catch (error) { /* unknown currency code: fall back to a plain number */ }
+    return NUMBER.format(value) + (currency ? " " + currency : "");
+}
+
+function isYear(value) {
+    return typeof value === "number" && value >= 1900 && value <= 2200;
+}
+
+/* ---------- Loading ---------- */
+
+function names(collection) {
+    return new Map(collection.toArray().map(item => [item.id, item.name]));
+}
+
+async function loadData() {
+    if (typeof sdk === "undefined") {
+        return demoData();
+    }
+
+    const [info, wines, orders, colors, regions, countries, vendors] = await Promise.all([
+        sdk.cellar.getInfo(),
+        sdk.cellar.wine.getAll(),
+        sdk.cellar.order.getAll(),
+        sdk.cellar.color.getAll(),
+        sdk.cellar.region.getAll(),
+        sdk.cellar.country.getAll(),
+        sdk.cellar.vendor.getAll()
+    ]);
+
+    return {
+        demo: false,
+        info,
+        wines: wines.toArray().map(w => ({
+            id: w.id,
+            name: w.name,
+            vintage: w.vintage ?? null,
+            bottles: w.bottles ?? 0,
+            price: typeof w.estimatePrice === "number" ? w.estimatePrice : null,
+            colorId: w.colorId,
+            regionId: w.regionId,
+            countryId: w.countryId,
+            from: w.drinkPeriod?.from ?? null,
+            to: w.drinkPeriod?.to ?? null
+        })),
+        orders: orders.toArray().map(o => ({
+            wineId: o.wineId ?? null,
+            vendorId: o.vendorId ?? null,
+            date: o.date instanceof Date ? o.date : null,
+            purchases: o.purchases ?? 0,
+            consumptions: o.consumptions ?? 0,
+            unitPrice: o.unitPrice,
+            amount: o.amount,
+            currency: o.currency || "",
+            occasion: o.occasion ?? 0
+        })),
+        colors: names(colors),
+        regions: names(regions),
+        countries: names(countries),
+        vendors: names(vendors)
+    };
+}
+
+/* ---------- Computation ---------- */
+
+/** Spend of a purchase: the recorded amount, else quantity × unit price. null when unknown. */
+function spendOf(order) {
+    if (!(order.purchases > 0)) return null;
+    if (typeof order.amount === "number") return order.amount;
+    if (typeof order.unitPrice === "number") return order.purchases * order.unitPrice;
+    return null;
+}
+
+function inPeriod(order, period) {
+    if (period === "all") return true;
+    if (!order.date) return false;                      // undated orders only count in "all"
+    if (period === "12m") {
+        const limit = new Date();
+        limit.setFullYear(limit.getFullYear() - 1);
+        return order.date >= limit;
+    }
+    return order.date.getFullYear() === Number(period);
+}
+
+function groupSum(items, keyOf, valueOf) {
+    const map = new Map();
+    for (const item of items) {
+        const key = keyOf(item);
+        map.set(key, (map.get(key) ?? 0) + valueOf(item));
+    }
+    return map;
+}
+
+function topEntries(map, limit = TOP) {
+    return [...map.entries()].filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).slice(0, limit);
+}
+
+function mainCurrency(orders) {
+    const counts = new Map();
+    for (const o of orders) {
+        if (spendOf(o) !== null) counts.set(o.currency, (counts.get(o.currency) ?? 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? "";
+}
+
+/** Buckets of the time charts: months for a year / 12 months, years for "all". */
+function buckets(orders, period) {
+    const dated = orders.filter(o => o.date);
+    const list = [];
+
+    if (period === "all") {
+        if (!dated.length) return list;
+        const years = dated.map(o => o.date.getFullYear());
+        for (let y = Math.min(...years); y <= Math.max(...years); y++) {
+            list.push({ key: String(y), label: String(y) });
+        }
+        return list;
+    }
+
+    if (period === "12m") {
+        const now = new Date();
+        for (let i = 11; i >= 0; i--) {
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            list.push({ key: d.getFullYear() + "-" + d.getMonth(), label: MONTHS[d.getMonth()] });
+        }
+        return list;
+    }
+
+    for (let m = 0; m < 12; m++) {
+        list.push({ key: period + "-" + m, label: MONTHS[m] });
+    }
+    return list;
+}
+
+function bucketKey(order, period) {
+    return period === "all" ? String(order.date.getFullYear()) : order.date.getFullYear() + "-" + order.date.getMonth();
+}
+
+/* ---------- Rendering ---------- */
+
+function renderKpis(stats) {
+    const kpis = $("kpis");
+    kpis.innerHTML = "";
+
+    const items = [
+        [NUMBER.format(stats.bottles), "bouteilles en cave"],
+        [NUMBER.format(stats.wines), "vins en cave"],
+        [stats.value === null ? "–" : money(stats.value, stats.currency), "valeur estimée" + (stats.unpriced ? ` (${stats.unpriced} sans prix)` : "")],
+        [money(stats.spent, stats.currency), "dépensé sur la période"],
+        [NUMBER.format(stats.drunk), "bouteilles consommées"]
+    ];
+
+    for (const [value, label] of items) {
+        const kpi = el("div", "kpi");
+        kpi.append(el("div", "value", value), el("div", "label", label));
+        kpis.append(kpi);
+    }
+}
+
+function hbars(target, entries, format = NUMBER.format.bind(NUMBER), emptyText = "Aucune donnée") {
+    target.innerHTML = "";
+    if (!entries.length) {
+        target.append(el("div", "empty", emptyText));
+        return;
+    }
+    const max = Math.max(...entries.map(([, v]) => v));
+    for (const [name, value] of entries) {
+        const row = el("div", "hbar");
+        const track = el("div", "track");
+        const fill = el("div", "fill");
+        fill.style.width = Math.max(2, Math.round((value / max) * 100)) + "%";
+        track.append(fill);
+        row.append(el("div", "name", name), track, el("div", "num", format(value)));
+        row.querySelector(".name").title = name;
+        target.append(row);
+    }
+}
+
+function columns(target, list, series, formats) {
+    target.innerHTML = "";
+    if (!list.length || series.every(s => [...s.values.values()].every(v => !v))) {
+        target.append(el("div", "empty", "Aucune donnée datée sur cette période"));
+        return;
+    }
+
+    const max = Math.max(...series.flatMap(s => [...s.values.values()]), 1);
+    const chart = el("div", "chart");
+
+    for (const bucket of list) {
+        const col = el("div", "col");
+        const bars = el("div", "bars");
+        const tips = [];
+        series.forEach((s, index) => {
+            const value = s.values.get(bucket.key) ?? 0;
+            const bar = el("div", index ? "bar b" : "bar");
+            bar.style.height = Math.round((value / max) * 100) + "%";
+            bars.append(bar);
+            tips.push(s.label + " : " + formats(value));
+        });
+        col.title = bucket.label + " — " + tips.join(", ");
+        col.append(bars, el("div", "tick", bucket.label));
+        chart.append(col);
+    }
+    target.append(chart);
+
+    const legend = el("div", "legend");
+    series.forEach((s, index) => {
+        const item = el("span");
+        item.append(el("span", index ? "dot b" : "dot"), document.createTextNode(s.label));
+        legend.append(item);
+    });
+    target.append(legend);
+}
+
+function renderDrink(target) {
+    target.innerHTML = "";
+    const year = new Date().getFullYear();
+    const candidates = data.wines
+        .filter(w => w.bottles > 0 && isYear(w.from) && isYear(w.to))
+        .map(w => ({ wine: w, state: w.to < year ? "late" : (w.from <= year ? "now" : "soon") }))
+        .filter(x => x.state !== "soon")
+        .sort((a, b) => a.wine.to - b.wine.to)
+        .slice(0, 10);
+
+    if (!candidates.length) {
+        target.append(el("div", "empty", "Aucun vin avec une période de dégustation renseignée"));
+        return;
+    }
+
+    const list = el("ul");
+    for (const { wine, state } of candidates) {
+        const item = el("li");
+        const open = el("button", "", wine.name || "(sans nom)");
+        open.addEventListener("click", () => typeof sdk !== "undefined" && sdk.ui.openWine({ id: wine.id }));
+        item.append(open, el("span", "meta", state === "late" ? `dépassé (${wine.to})` : `jusqu'à ${wine.to}`));
+        list.append(item);
+    }
+    target.append(list);
+    target.append(el("p", "note", "Vins en cave dont la période de dégustation est en cours ou dépassée."));
+}
+
+function render() {
+    const period = $("period").value;
+    const orders = data.orders.filter(o => inPeriod(o, period));
+    const currency = mainCurrency(orders.length ? orders : data.orders);
+
+    const inCellar = data.wines.filter(w => w.bottles > 0);
+    const priced = inCellar.filter(w => w.price !== null);
+    const spendOrders = orders.filter(o => o.currency === currency);
+
+    renderKpis({
+        bottles: inCellar.reduce((n, w) => n + w.bottles, 0),
+        wines: inCellar.length,
+        value: priced.length ? priced.reduce((n, w) => n + w.price * w.bottles, 0) : null,
+        unpriced: inCellar.length - priced.length,
+        spent: spendOrders.reduce((n, o) => n + (spendOf(o) ?? 0), 0),
+        drunk: orders.reduce((n, o) => n + (o.consumptions || 0), 0),
+        currency
+    });
+
+    // Time charts
+    const list = buckets(orders, period);
+    const dated = orders.filter(o => o.date);
+    const sumBy = (items, valueOf) => groupSum(items, o => bucketKey(o, period), valueOf);
+
+    columns($("flow"), list, [
+        { label: "Achetées", values: sumBy(dated, o => o.purchases || 0) },
+        { label: "Bues", values: sumBy(dated, o => o.consumptions || 0) }
+    ], v => NUMBER.format(v) + " btl");
+
+    columns($("spend"), list, [
+        { label: "Dépenses", values: sumBy(dated.filter(o => o.currency === currency), o => spendOf(o) ?? 0) }
+    ], v => money(v, currency));
+
+    const others = new Set(orders.filter(o => spendOf(o) !== null && o.currency !== currency).map(o => o.currency || "?"));
+    const undated = orders.filter(o => !o.date).length;
+    const notes = [];
+    if (others.size) notes.push(`Achats dans d'autres devises non comptés : ${[...others].join(", ")}.`);
+    if (undated) notes.push(`${undated} mouvement(s) sans date, comptés dans les totaux de « Tout » seulement.`);
+    $("spend").append(...notes.map(n => el("p", "note", n)));
+
+    // Cellar breakdowns (do not depend on the period)
+    const bottlesBy = keyOf => groupSum(inCellar, keyOf, w => w.bottles);
+    hbars($("colors"), topEntries(bottlesBy(w => data.colors.get(w.colorId) || "Sans couleur")));
+    hbars($("regions"), topEntries(bottlesBy(w => data.regions.get(w.regionId) || data.countries.get(w.countryId) || "Non renseigné")));
+    hbars($("vintages"), topEntries(bottlesBy(w => w.vintage ? String(w.vintage) : "Sans millésime"), 12));
+
+    // Movements of the period
+    hbars($("occasions"), topEntries(groupSum(
+        orders.filter(o => o.consumptions > 0),
+        o => OCCASIONS[o.occasion] ?? "Autre",
+        o => o.consumptions
+    )), v => NUMBER.format(v) + " btl", "Aucune consommation sur la période");
+
+    hbars($("vendors"), topEntries(groupSum(
+        spendOrders.filter(o => spendOf(o) !== null),
+        o => data.vendors.get(o.vendorId) || "Sans fournisseur",
+        o => spendOf(o)
+    )), v => money(v, currency), "Aucun achat chiffré sur la période");
+
+    renderDrink($("drink"));
+}
+
+function fillPeriods() {
+    const select = $("period");
+    select.innerHTML = "";
+    select.add(new Option("Tout", "all"));
+    select.add(new Option("12 derniers mois", "12m"));
+    const years = [...new Set(data.orders.filter(o => o.date).map(o => o.date.getFullYear()))].sort((a, b) => b - a);
+    for (const year of years) select.add(new Option(String(year), String(year)));
+}
+
+/* ---------- Demo data (page opened outside PLOC) ---------- */
+
+function demoData() {
+    const year = new Date().getFullYear();
+    const colors = new Map([["c1", "Rouge"], ["c2", "Blanc"], ["c3", "Rosé"], ["c4", "Effervescent"]]);
+    const regions = new Map([["r1", "Bordeaux"], ["r2", "Bourgogne"], ["r3", "Rhône"], ["r4", "Loire"], ["r5", "Alsace"]]);
+    const vendors = new Map([["v1", "Cave du coin"], ["v2", "Domaine direct"], ["v3", "Salon des vignerons"]]);
+    const wines = [];
+    const orders = [];
+    for (let i = 0; i < 40; i++) {
+        const bottles = (i * 7) % 9;
+        wines.push({
+            id: "w" + i, name: "Vin de démonstration " + (i + 1), vintage: 2005 + ((i * 3) % 18), bottles,
+            price: i % 6 === 0 ? null : 12 + ((i * 11) % 60), colorId: "c" + (1 + (i % 4)), regionId: "r" + (1 + (i % 5)), countryId: null,
+            from: year - 3 + (i % 5), to: year - 2 + ((i * 2) % 9)
+        });
+        for (let k = 0; k < 3; k++) {
+            const when = new Date(year - (k % 3), (i * 5 + k * 4) % 12, 1 + (i % 27));
+            orders.push({ wineId: "w" + i, vendorId: "v" + (1 + ((i + k) % 3)), date: when, purchases: 2 + (i % 4), consumptions: 0, unitPrice: 12 + ((i * 11) % 60), amount: null, currency: "EUR", occasion: 0 });
+            orders.push({ wineId: "w" + i, vendorId: null, date: new Date(year - (k % 3), (i * 3 + k * 5) % 12, 5 + (i % 20)), purchases: 0, consumptions: 1 + (i % 2), unitPrice: null, amount: null, currency: "", occasion: [1, 2, 4, 1, 64][(i + k) % 5] });
+        }
+    }
+    return {
+        demo: true,
+        info: { counts: { bottles: wines.reduce((n, w) => n + w.bottles, 0), wines: wines.filter(w => w.bottles > 0).length }, empty: false },
+        wines, orders, colors, regions, countries: new Map(), vendors
+    };
+}
+
+/* ---------- Start ---------- */
+
+async function init() {
+    data = await loadData();
+
+    if (data.demo) {
+        $("banner").append(el("div", "banner", "Données de démonstration : ouvre cette page depuis PLOC pour voir ta cave."));
+    }
+
+    if (data.info?.empty && !data.demo) {
+        $("summary").textContent = "Ta cave est vide.";
+    } else {
+        $("summary").textContent = `${NUMBER.format(data.info.counts.bottles)} bouteilles · ${NUMBER.format(data.info.counts.wines)} vins · ${NUMBER.format(data.orders.length)} mouvements`;
+    }
+
+    fillPeriods();
+    $("period").addEventListener("change", render);
+    render();
+}
+
+init().catch(error => {
+    $("summary").textContent = "Une erreur est survenue : " + error.message;
+});
+</script>
+</body>
+</html>
