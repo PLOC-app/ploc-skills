@@ -1,0 +1,1945 @@
+{
+  "$schema": "./catalog.schema.json",
+  "sdkVersion": "1.0.0",
+  "count": 202,
+  "entries": {
+    "ui.openWine": {
+      "desc": "Open a wine's detail page. Accepts the wine id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openWine(\"WINE_ID\");\nawait sdk.ui.openWine({ id: \"WINE_ID\" });"
+    },
+    "ui.openWines": {
+      "desc": "Open the wine list.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openWines({});"
+    },
+    "ui.openWineFilters": {
+      "desc": "Open the wine filters, where the user filters wines by color, region, grape, vintage and other attributes.",
+      "params": [],
+      "snippet": "await sdk.ui.openWineFilters();"
+    },
+    "ui.openRack": {
+      "desc": "Open a rack. Accepts the rack id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openRack(\"RACK_ID\");\nawait sdk.ui.openRack({ id: \"RACK_ID\" });"
+    },
+    "ui.openRacks": {
+      "desc": "Open the rack list.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openRacks({});"
+    },
+    "ui.openRackOnboarding": {
+      "desc": "Open the racks onboarding.",
+      "params": [],
+      "snippet": "await sdk.ui.openRackOnboarding();"
+    },
+    "ui.openTastingNotesOnboarding": {
+      "desc": "Open the tasting notes onboarding.",
+      "params": [],
+      "snippet": "await sdk.ui.openTastingNotesOnboarding();"
+    },
+    "ui.openRackWizard": {
+      "desc": "Open the rack creation wizard.",
+      "params": [],
+      "snippet": "await sdk.ui.openRackWizard();"
+    },
+    "ui.openRackEditor": {
+      "desc": "Open the rack editor (expert mode) for a rack. Accepts the rack id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openRackEditor(\"RACK_ID\");\nawait sdk.ui.openRackEditor({ id: \"RACK_ID\" });"
+    },
+    "ui.openTastingNote": {
+      "desc": "Open a tasting note. Accepts the note id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openTastingNote(\"NOTE_ID\");\nawait sdk.ui.openTastingNote({ id: \"NOTE_ID\" });"
+    },
+    "ui.openUrl": {
+      "desc": "Open a URL. Accepts a URL string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.url",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openUrl(\"https://ploc.app\");\nawait sdk.ui.openUrl({ url: \"https://ploc.app\" });"
+    },
+    "ui.openStatistics": {
+      "desc": "Open the statistics.",
+      "params": [],
+      "snippet": "await sdk.ui.openStatistics();"
+    },
+    "ui.openReportCenter": {
+      "desc": "Open the report center.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openReportCenter({});"
+    },
+    "ui.openPloud": {
+      "desc": "Open the Ploud view.",
+      "params": [],
+      "snippet": "await sdk.ui.openPloud();"
+    },
+    "ui.openBackupCenter": {
+      "desc": "Open the backup center.",
+      "params": [],
+      "snippet": "await sdk.ui.openBackupCenter();"
+    },
+    "ui.openAbout": {
+      "desc": "Open the About page.",
+      "params": [],
+      "snippet": "await sdk.ui.openAbout();"
+    },
+    "ui.openTastingNotes": {
+      "desc": "Open the tasting notes list.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openTastingNotes({});"
+    },
+    "ui.openPreferences": {
+      "desc": "Open the preferences.",
+      "params": [],
+      "snippet": "await sdk.ui.openPreferences();"
+    },
+    "ui.openImplocation": {
+      "desc": "Open the Implocation view.",
+      "params": [],
+      "snippet": "await sdk.ui.openImplocation();"
+    },
+    "ui.openAccount": {
+      "desc": "Open the account view.",
+      "params": [],
+      "snippet": "await sdk.ui.openAccount();"
+    },
+    "ui.openObservintoire": {
+      "desc": "Open the Observintoire view.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openObservintoire({});"
+    },
+    "ui.openSupportUs": {
+      "desc": "Open the Support Us view.",
+      "params": [],
+      "snippet": "await sdk.ui.openSupportUs();"
+    },
+    "ui.openMyWineRequests": {
+      "desc": "Open the user's wine requests.",
+      "params": [],
+      "snippet": "await sdk.ui.openMyWineRequests();"
+    },
+    "ui.openDansTonPloc": {
+      "desc": "Open the Dans ton PLOC view.",
+      "params": [],
+      "snippet": "await sdk.ui.openDansTonPloc();"
+    },
+    "ui.openDrops": {
+      "desc": "Open the Drops view.",
+      "params": [],
+      "snippet": "await sdk.ui.openDrops();"
+    },
+    "ui.openCommunity": {
+      "desc": "Open the Community view.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openCommunity();"
+    },
+    "ui.openMiniApps": {
+      "desc": "Open the mini apps view. Same as sdk.miniApps.open.",
+      "params": [],
+      "snippet": "await sdk.ui.openMiniApps();"
+    },
+    "ui.openCsvExport": {
+      "desc": "Open the CSV export view.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openCsvExport({});"
+    },
+    "ui.openOrder": {
+      "desc": "Open an order. Accepts the order id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openOrder(\"ORDER_ID\");\nawait sdk.ui.openOrder({ id: \"ORDER_ID\" });"
+    },
+    "ui.openVendor": {
+      "desc": "Open a vendor. Accepts the vendor id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openVendor(\"VENDOR_ID\");\nawait sdk.ui.openVendor({ id: \"VENDOR_ID\" });"
+    },
+    "ui.openOwner": {
+      "desc": "Open an owner. Accepts the owner id or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.id",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.openOwner(\"OWNER_ID\");\nawait sdk.ui.openOwner({ id: \"OWNER_ID\" });"
+    },
+    "ui.openCurrencyPreferences": {
+      "desc": "Open the currency preferences.",
+      "params": [],
+      "snippet": "await sdk.ui.openCurrencyPreferences();"
+    },
+    "ui.openFiveStarsDialog": {
+      "desc": "Open the five-stars rating dialog.",
+      "params": [],
+      "snippet": "await sdk.ui.openFiveStarsDialog();"
+    },
+    "ui.openScriptEditorHost": {
+      "desc": "Open the script editor.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openScriptEditorHost({});"
+    },
+    "ui.openPop": {
+      "desc": "Open POP.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openPop({});"
+    },
+    "ui.openIconPreferences": {
+      "desc": "Open the app icon preferences (iOS only).",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.ui.openIconPreferences({});"
+    },
+    "ui.share": {
+      "desc": "Open the native share sheet. Accepts a local file path (string), an array of paths, or an options object { base64 } like sdk.ui.shareImage. Shortcut for shareFiles.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | string[] | object"
+        }
+      ],
+      "snippet": "const files = await sdk.csv.createFiles();\nawait sdk.ui.share(files.map(f => f.path));"
+    },
+    "ui.shareFiles": {
+      "desc": "Open the native share sheet with one or several local files (e.g. from sdk.csv.createFiles or sdk.backup.createBackupFile). Accepts a path or an array of paths.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | string[]"
+        }
+      ],
+      "snippet": "const file = await sdk.backup.createBackupFile();\nawait sdk.ui.shareFiles(file.path);"
+    },
+    "ui.shareImage": {
+      "desc": "Open the native share sheet with a base64 image.",
+      "params": [
+        {
+          "name": "params.base64",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.ui.shareImage({ base64: \"BASE64_DATA\" });"
+    },
+    "ui.shareText": {
+      "desc": "Open the native share sheet with a text. Accepts a string or an options object { text }.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "await sdk.ui.shareText(\"Château Margaux 2015, 96/100\");"
+    },
+    "ui.closeWindow": {
+      "desc": "Close the current window.",
+      "params": [],
+      "snippet": "await sdk.ui.closeWindow();"
+    },
+    "cellar.getInfo": {
+      "desc": "Get all cellar information in one object: identifier, empty and locked (booleans; a locked cellar prevents synchronization), currency (ISO code, e.g. \"EUR\"), size (in bytes) and counts of wines, bottles, tastingNotes, racks, orders, documents, vendors and owners.",
+      "params": [],
+      "snippet": "const info = await sdk.cellar.getInfo();\nif (info.empty) {\n    return \"Empty cellar\";\n}\nreturn info.counts.bottles + \" bottles in \" + info.counts.wines + \" wines\";"
+    },
+    "cellar.wine.getAll": {
+      "desc": "Get all wines.",
+      "params": [],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nconsole.log(wines.count + \" wines\");\nreturn wines.map(w => w.name).toArray();"
+    },
+    "cellar.wine.get": {
+      "desc": "Get a wine by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const wine = await sdk.cellar.wine.get(\"WINE_ID\");\nreturn wine;"
+    },
+    "cellar.wine.find": {
+      "desc": "Find wines with a search text (string, or { query }). The text is matched like the app's search field. Return a Collection.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        },
+        {
+          "name": "param.query",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.wine.find(\"Margaux\");\nreturn results.map(w => w.name).toArray();"
+    },
+    "cellar.wine.findFirst": {
+      "desc": "Get the first wine matching a search text (string, or { query }), or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        },
+        {
+          "name": "param.query",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nreturn wine?.name;"
+    },
+    "cellar.rack.getAll": {
+      "desc": "Get all racks.",
+      "params": [],
+      "snippet": "const racks = await sdk.cellar.rack.getAll();\nreturn racks.map(r => r.name).toArray();"
+    },
+    "cellar.country.getAll": {
+      "desc": "Get all countries.",
+      "params": [],
+      "snippet": "const countries = await sdk.cellar.country.getAll();\nreturn countries.map(c => c.name).toArray();"
+    },
+    "cellar.owner.getAll": {
+      "desc": "Get all owners.",
+      "params": [],
+      "snippet": "const owners = await sdk.cellar.owner.getAll();\nreturn owners.map(o => o.name).toArray();"
+    },
+    "cellar.vendor.getAll": {
+      "desc": "Get all vendors.",
+      "params": [],
+      "snippet": "const vendors = await sdk.cellar.vendor.getAll();\nreturn vendors.map(v => v.name).toArray();"
+    },
+    "cellar.country.get": {
+      "desc": "Get a country by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.country.get(\"ID\");\nreturn item;"
+    },
+    "cellar.country.find": {
+      "desc": "Find countries by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.country.find(\"France\");\nreturn results.toArray();"
+    },
+    "cellar.country.findFirst": {
+      "desc": "Get the first matching country, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.country.findFirst(\"France\");\nreturn item;"
+    },
+    "cellar.region.getAll": {
+      "desc": "Get all regions.",
+      "params": [],
+      "snippet": "const regions = await sdk.cellar.region.getAll();\nreturn regions.map(r => r.name).toArray();"
+    },
+    "cellar.region.get": {
+      "desc": "Get a region by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.region.get(\"ID\");\nreturn item;"
+    },
+    "cellar.region.find": {
+      "desc": "Find regions by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.region.find(\"Bordeaux\");\nreturn results.toArray();"
+    },
+    "cellar.region.findFirst": {
+      "desc": "Get the first matching region, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.region.findFirst(\"Bordeaux\");\nreturn item;"
+    },
+    "cellar.appellation.getAll": {
+      "desc": "Get all appellations.",
+      "params": [],
+      "snippet": "const appellations = await sdk.cellar.appellation.getAll();\nreturn appellations.map(a => a.name).toArray();"
+    },
+    "cellar.appellation.get": {
+      "desc": "Get a appellation by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.appellation.get(\"ID\");\nreturn item;"
+    },
+    "cellar.appellation.find": {
+      "desc": "Find appellations by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.appellation.find(\"Margaux\");\nreturn results.toArray();"
+    },
+    "cellar.appellation.findFirst": {
+      "desc": "Get the first matching appellation, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.appellation.findFirst(\"Margaux\");\nreturn item;"
+    },
+    "cellar.grape.getAll": {
+      "desc": "Get all grapes.",
+      "params": [],
+      "snippet": "const grapes = await sdk.cellar.grape.getAll();\nreturn grapes.map(g => g.name).toArray();"
+    },
+    "cellar.grape.get": {
+      "desc": "Get a grape by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.grape.get(\"ID\");\nreturn item;"
+    },
+    "cellar.grape.find": {
+      "desc": "Find grapes by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.grape.find(\"Merlot\");\nreturn results.toArray();"
+    },
+    "cellar.grape.findFirst": {
+      "desc": "Get the first matching grape, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.grape.findFirst(\"Merlot\");\nreturn item;"
+    },
+    "cellar.classification.getAll": {
+      "desc": "Get all classifications.",
+      "params": [],
+      "snippet": "const classifications = await sdk.cellar.classification.getAll();\nreturn classifications.map(c => c.name).toArray();"
+    },
+    "cellar.classification.get": {
+      "desc": "Get a classification by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.classification.get(\"ID\");\nreturn item;"
+    },
+    "cellar.classification.find": {
+      "desc": "Find classifications by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.classification.find(\"Grand Cru\");\nreturn results.toArray();"
+    },
+    "cellar.classification.findFirst": {
+      "desc": "Get the first matching classification, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.classification.findFirst(\"Grand Cru\");\nreturn item;"
+    },
+    "cellar.color.getAll": {
+      "desc": "Get all colors.",
+      "params": [],
+      "snippet": "const colors = await sdk.cellar.color.getAll();\nreturn colors.map(c => c.name).toArray();"
+    },
+    "cellar.color.get": {
+      "desc": "Get a color by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.color.get(\"ID\");\nreturn item;"
+    },
+    "cellar.color.find": {
+      "desc": "Find colors by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.color.find(\"Red\");\nreturn results.toArray();"
+    },
+    "cellar.color.findFirst": {
+      "desc": "Get the first matching color, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.color.findFirst(\"Red\");\nreturn item;"
+    },
+    "cellar.bottleFormat.getAll": {
+      "desc": "Get all bottle formats.",
+      "params": [],
+      "snippet": "const bottleFormats = await sdk.cellar.bottleFormat.getAll();\nreturn bottleFormats.map(b => b.name).toArray();"
+    },
+    "cellar.bottleFormat.get": {
+      "desc": "Get a bottle format by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.bottleFormat.get(\"ID\");\nreturn item;"
+    },
+    "cellar.bottleFormat.find": {
+      "desc": "Find bottle formats by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.bottleFormat.find(\"Magnum\");\nreturn results.toArray();"
+    },
+    "cellar.bottleFormat.findFirst": {
+      "desc": "Get the first matching bottle format, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.bottleFormat.findFirst(\"Magnum\");\nreturn item;"
+    },
+    "cellar.vendor.get": {
+      "desc": "Get a vendor by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.vendor.get(\"ID\");\nreturn item;"
+    },
+    "cellar.vendor.find": {
+      "desc": "Find vendors by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.vendor.find(\"NAME\");\nreturn results.toArray();"
+    },
+    "cellar.vendor.findFirst": {
+      "desc": "Get the first matching vendor, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.vendor.findFirst(\"NAME\");\nreturn item;"
+    },
+    "cellar.owner.get": {
+      "desc": "Get a owner by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.owner.get(\"ID\");\nreturn item;"
+    },
+    "cellar.owner.find": {
+      "desc": "Find owners by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.owner.find(\"NAME\");\nreturn results.toArray();"
+    },
+    "cellar.owner.findFirst": {
+      "desc": "Get the first matching owner, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.owner.findFirst(\"NAME\");\nreturn item;"
+    },
+    "cellar.parameter.getAll": {
+      "desc": "Get all parameters.",
+      "params": [],
+      "snippet": "const parameters = await sdk.cellar.parameter.getAll();\nreturn parameters.map(p => p.name).toArray();"
+    },
+    "cellar.parameter.get": {
+      "desc": "Get a parameter by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.parameter.get(\"ID\");\nreturn item;"
+    },
+    "cellar.parameter.find": {
+      "desc": "Find parameters by name (string) or by criteria (object).",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.parameter.find(\"NAME\");\nreturn results.toArray();"
+    },
+    "cellar.parameter.findFirst": {
+      "desc": "Get the first matching parameter, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.parameter.findFirst(\"NAME\");\nreturn item;"
+    },
+    "cellar.order.getAll": {
+      "desc": "Get all orders.",
+      "params": [],
+      "snippet": "const orders = await sdk.cellar.order.getAll();\nreturn orders.count + \" orders\";"
+    },
+    "cellar.order.get": {
+      "desc": "Get a order by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.order.get(\"ID\");\nreturn item;"
+    },
+    "cellar.rack.get": {
+      "desc": "Get a rack by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.rack.get(\"ID\");\nreturn item;"
+    },
+    "cellar.rack.find": {
+      "desc": "Find racks with a search text (string, or { query }), optionally restricted to the racks holding a wine with { wineId }. Return a Collection.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        },
+        {
+          "name": "param.query",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "param.wineId",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.rack.find(\"NAME\");\nreturn results.toArray();"
+    },
+    "cellar.rack.findFirst": {
+      "desc": "Get the first rack matching a search text (string, or { query }) and optionally { wineId }, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        },
+        {
+          "name": "param.query",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "param.wineId",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn item;"
+    },
+    "cellar.document.getAll": {
+      "desc": "Get all documents.",
+      "params": [],
+      "snippet": "const documents = await sdk.cellar.document.getAll();\nreturn documents.map(d => d.filename).toArray();"
+    },
+    "cellar.document.get": {
+      "desc": "Get a document by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.document.get(\"ID\");\nreturn item;"
+    },
+    "cellar.tastingNotes.getAll": {
+      "desc": "Get all tasting notes.",
+      "params": [],
+      "snippet": "const notes = await sdk.cellar.tastingNotes.getAll();\nreturn notes.count + \" tasting notes\";"
+    },
+    "cellar.tastingNotes.get": {
+      "desc": "Get a tasting note by its id.",
+      "params": [
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.tastingNotes.get(\"ID\");\nreturn item;"
+    },
+    "cellar.order.find": {
+      "desc": "Find orders by criteria (object), e.g. by wineId. Return a Collection.",
+      "params": [
+        {
+          "name": "param",
+          "type": "object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.order.find({ wineId: \"WINE_ID\" });\nreturn results.toArray();"
+    },
+    "cellar.order.findFirst": {
+      "desc": "Get the first order matching criteria (object), or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.order.findFirst({ wineId: \"WINE_ID\" });\nreturn item;"
+    },
+    "cellar.document.find": {
+      "desc": "Find documents by criteria (object), e.g. by parentId. Return a Collection.",
+      "params": [
+        {
+          "name": "param",
+          "type": "object"
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.document.find({ parentId: \"PARENT_ID\" });\nreturn results.toArray();"
+    },
+    "cellar.document.findFirst": {
+      "desc": "Get the first document matching criteria (object), or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "object"
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.document.findFirst({ parentId: \"PARENT_ID\" });\nreturn item;"
+    },
+    "cellar.tastingNotes.find": {
+      "desc": "Find tasting notes with a search text (string, or { query }), optionally restricted to a wine with { wineId }. Return a Collection.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        },
+        {
+          "name": "param.query",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "param.wineId",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const results = await sdk.cellar.tastingNotes.find({ wineId: \"WINE_ID\" });\nreturn results.toArray();"
+    },
+    "cellar.tastingNotes.findFirst": {
+      "desc": "Get the first tasting note matching a search text (string, or { query }) and optionally { wineId }, or null.",
+      "params": [
+        {
+          "name": "param",
+          "type": "string | object"
+        },
+        {
+          "name": "param.query",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "param.wineId",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const item = await sdk.cellar.tastingNotes.findFirst({ wineId: \"WINE_ID\" });\nreturn item;"
+    },
+    "network.fetchBase64": {
+      "desc": "Download a resource and return it as base64. Accepts a URL string or an options object. Default timeout is 30000 ms, set params.timeout (ms) to change it, or 0 for no timeout.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.url",
+          "type": "string"
+        },
+        {
+          "name": "params.timeout",
+          "type": "number",
+          "optional": true
+        }
+      ],
+      "snippet": "const b64 = await sdk.network.fetchBase64(\"https://example.com/image.png\");\nconst big = await sdk.network.fetchBase64({ url: \"https://example.com/big.pdf\", timeout: 120000 });\nreturn b64?.base64.length;"
+    },
+    "network.download": {
+      "desc": "Download a URL to a local file, streamed to disk. Accepts a URL string or an options object. Return { path, size } (null on failure). Pass the path to sdk.backup.restoreBackupFile.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.url",
+          "type": "string"
+        },
+        {
+          "name": "params.headers",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "const file = await sdk.network.download(\"https://example.com/backup.co\");\nreturn file;"
+    },
+    "network.request": {
+      "desc": "Send an HTTP request and return { status, headers, body } (body as text, null on failure). Accepts a URL string (GET) or an options object. Default method is GET. Default timeout is 30000 ms, set params.timeout (ms) to change it, or 0 for no timeout. For binary content use fetchBase64 or download.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.url",
+          "type": "string"
+        },
+        {
+          "name": "params.method",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.headers",
+          "type": "object",
+          "optional": true
+        },
+        {
+          "name": "params.body",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.timeout",
+          "type": "number",
+          "optional": true
+        }
+      ],
+      "snippet": "const res = await sdk.network.request(\"https://api.example.com/wines\");\nreturn JSON.parse(res.body);"
+    },
+    "network.upload": {
+      "desc": "Upload a local file (e.g. from sdk.backup.createBackupFile) to a URL, streamed from disk. Return { status, body }. Default method is PUT.",
+      "params": [
+        {
+          "name": "params.path",
+          "type": "string"
+        },
+        {
+          "name": "params.url",
+          "type": "string"
+        },
+        {
+          "name": "params.method",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.headers",
+          "type": "object",
+          "optional": true
+        },
+        {
+          "name": "params.fieldName",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.fields",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "const file = await sdk.backup.createBackupFile();\nconst res = await sdk.network.upload({ path: file.path, url: \"https://example.com/upload\", method: \"PUT\" });\nreturn res.status;"
+    },
+    "dialog.alert": {
+      "desc": "Show an information dialog. Accepts a message string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.message",
+          "type": "string"
+        },
+        {
+          "name": "params.title",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.okLabel",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.dialog.alert({ title: \"Info\", message: \"Operation completed.\" });\nawait sdk.dialog.alert(\"Done.\");"
+    },
+    "dialog.confirm": {
+      "desc": "Show a confirmation dialog and return true if confirmed, false otherwise.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.message",
+          "type": "string"
+        },
+        {
+          "name": "params.title",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.okLabel",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.cancelLabel",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const ok = await sdk.dialog.confirm({ title: \"Delete\", message: \"Delete this wine?\", okLabel: \"Delete\" });\nreturn ok;"
+    },
+    "dialog.prompt": {
+      "desc": "Show an input dialog and return the entered text, or null if cancelled.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.message",
+          "type": "string"
+        },
+        {
+          "name": "params.title",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.placeholder",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.defaultValue",
+          "type": "string",
+          "optional": true
+        },
+        {
+          "name": "params.okLabel",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const name = await sdk.dialog.prompt({ message: \"Your name?\", placeholder: \"Name\" });\nreturn name;"
+    },
+    "dialog.toast": {
+      "desc": "Show a short non-blocking message (toast) that disappears on its own. Accepts a text string or an options object. Resolve as soon as the toast is shown, without waiting for the user.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.text",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.dialog.toast(\"Wine added\");\nawait sdk.dialog.toast({ text: \"Saved\" });"
+    },
+    "dialog.pick": {
+      "desc": "Show the native selection screen and return the chosen item, or null if cancelled. Items are ids (string[]) or { id, text }[] objects, with plain ids the native app shows its own label. The result is always an { id, text } object (text is null if unknown). Ids must be unique. Accepts an items array or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "(string | object)[] | object"
+        },
+        {
+          "name": "params.items",
+          "type": "(string | { id: string, text?: string })[]"
+        },
+        {
+          "name": "params.selected",
+          "type": "string[]",
+          "optional": true
+        },
+        {
+          "name": "params.title",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const wine = await sdk.dialog.pick({\n  title: \"Choose a wine\",\n  items: [{ id: \"w1\", text: \"Margaux 2015\" }, { id: \"w2\", text: \"Pomerol 2016\" }]\n});\nreturn wine?.id ?? null;"
+    },
+    "dialog.pickMany": {
+      "desc": "Same as dialog.pick but allows several selections. Return an array of { id, text } objects (text is null if unknown), or null if cancelled.",
+      "params": [
+        {
+          "name": "params",
+          "type": "(string | object)[] | object"
+        },
+        {
+          "name": "params.items",
+          "type": "(string | { id: string, text?: string })[]"
+        },
+        {
+          "name": "params.selected",
+          "type": "string[]",
+          "optional": true
+        },
+        {
+          "name": "params.title",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const wines = await sdk.dialog.pickMany({\n  title: \"Choose wines\",\n  selected: [\"w1\"],\n  items: [{ id: \"w1\", text: \"Margaux 2015\" }, { id: \"w2\", text: \"Pomerol 2016\" }]\n});\nreturn wines?.map(w => w.id) ?? null;"
+    },
+    "haptics.play": {
+      "desc": "Play a haptic feedback. Accepts a type string or an options object. Types are in sdk.haptics.TYPE: success, warning, error, impact.light, impact.medium, impact.heavy, selection. Return true if played, false if unsupported or disabled on this device (never throws for that). Resolve immediately.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.type",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.haptics.play(sdk.haptics.TYPE.SUCCESS);\nawait sdk.haptics.play({ type: \"impact.light\" });"
+    },
+    "haptics.success": {
+      "desc": "Play the success haptic. Return true if played, false otherwise.",
+      "params": [],
+      "snippet": "await sdk.haptics.success();"
+    },
+    "haptics.warning": {
+      "desc": "Play the warning haptic. Return true if played, false otherwise.",
+      "params": [],
+      "snippet": "await sdk.haptics.warning();"
+    },
+    "haptics.error": {
+      "desc": "Play the error haptic. Return true if played, false otherwise.",
+      "params": [],
+      "snippet": "await sdk.haptics.error();"
+    },
+    "haptics.impact": {
+      "desc": "Play an impact haptic of the given style, from sdk.haptics.IMPACT: light, medium (default) or heavy. Return true if played, false otherwise.",
+      "params": [
+        {
+          "name": "style",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "await sdk.haptics.impact(sdk.haptics.IMPACT.LIGHT);\nawait sdk.haptics.impact();"
+    },
+    "haptics.selection": {
+      "desc": "Play the selection haptic, a small tick for a value change (picker, slider). Return true if played, false otherwise.",
+      "params": [],
+      "snippet": "await sdk.haptics.selection();"
+    },
+    "clipboard.copy": {
+      "desc": "Copy a text to the system clipboard. Accepts the text or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.text",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.clipboard.copy(\"Hello PLOC\");\nawait sdk.dialog.toast(\"Copied\");"
+    },
+    "backup.getInfo": {
+      "desc": "Get all backup information in one object: enabled, canEnable, status (compare with sdk.backup.STATUS), lastBackupDate (PLOC server) and lastManualBackupDate, both Date or null.",
+      "params": [],
+      "snippet": "return await sdk.backup.getInfo();"
+    },
+    "backup.enable": {
+      "desc": "Enable automatic backup. Return true if it is now enabled; false if it could not be enabled, in which case open the backup center so the user can fix it.",
+      "params": [],
+      "snippet": "const ok = await sdk.backup.enable();\nif (!ok) {\n    await sdk.backup.open();\n}\nreturn ok;"
+    },
+    "backup.disable": {
+      "desc": "Disable automatic backup.",
+      "params": [],
+      "snippet": "await sdk.backup.disable();"
+    },
+    "backup.backupNow": {
+      "desc": "Send the order to back up to the PLOC server now. Poll getInfo().status to follow it.",
+      "params": [],
+      "snippet": "await sdk.backup.backupNow();"
+    },
+    "backup.createBackupFile": {
+      "desc": "Create a manual backup file and return { path, size } (null on failure). Pass the path to sdk.network.upload.",
+      "params": [],
+      "snippet": "const file = await sdk.backup.createBackupFile();\nreturn file;"
+    },
+    "backup.restoreBackupFile": {
+      "desc": "Restore a backup from a local file (e.g. from sdk.network.download). Accepts the file path or an options object. Replaces the user's data; the app asks for confirmation. Return true if restored.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        }
+      ],
+      "snippet": "const file = await sdk.network.download(\"https://example.com/backup.co\");\nreturn await sdk.backup.restoreBackupFile(file.path);"
+    },
+    "backup.open": {
+      "desc": "Open the backup center.",
+      "params": [],
+      "snippet": "await sdk.backup.open();"
+    },
+    "ploud.getInfo": {
+      "desc": "Get all Ploud information in one object: enabled, canEnable (an account is available), status (compare with sdk.ploud.STATUS), server, deviceIdentifier, lastSyncDate (Date or null) and cellarLocked (true while the cellar is locked, which prevents synchronization).",
+      "params": [],
+      "snippet": "return await sdk.ploud.getInfo();"
+    },
+    "ploud.syncNow": {
+      "desc": "Send the order to synchronize with Ploud now. Return true if accepted; false if not (e.g. cellar locked, see getInfo().cellarLocked). Poll getInfo().status to follow it.",
+      "params": [],
+      "snippet": "const ok = await sdk.ploud.syncNow();\nif (!ok) {\n    const info = await sdk.ploud.getInfo();\n    return info.cellarLocked ? \"Cellar locked\" : \"Sync not possible\";\n}\nreturn \"Sync started\";"
+    },
+    "ploud.open": {
+      "desc": "Open the Ploud view, where the user can set up the service.",
+      "params": [],
+      "snippet": "await sdk.ploud.open();"
+    },
+    "csv.createFiles": {
+      "desc": "Export the cellar to CSV files and return an array of { path, size } (null on failure). With documents: true, the documents and the JSON data are exported too. Pass each path to sdk.network.upload.",
+      "params": [
+        {
+          "name": "params",
+          "type": "object",
+          "optional": true
+        },
+        {
+          "name": "params.documents",
+          "type": "boolean",
+          "optional": true
+        }
+      ],
+      "snippet": "const files = await sdk.csv.createFiles({ documents: false });\nreturn files;"
+    },
+    "csv.open": {
+      "desc": "Open the CSV export view, where the user can export and share their data.",
+      "params": [],
+      "snippet": "await sdk.csv.open();"
+    },
+    "pdf.createFile": {
+      "desc": "Print the cellar book to a PDF file and return { path, size } (null on failure). Without argument, prints all wines and all racks. With ids, prints only those objects: wines and racks can be mixed, PLOC finds each id. Accepts an array of ids (or objects with an id) or an options object. An empty array is rejected. Pass the path to sdk.ui.shareFiles or sdk.network.upload.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string[] | object",
+          "optional": true
+        },
+        {
+          "name": "params.ids",
+          "type": "string[]",
+          "optional": true
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.find(\"Margaux\");\nconst file = await sdk.pdf.createFile(wines.toArray().map(w => w.id));\nif (file) {\n    await sdk.ui.shareFiles(file.path);\n}"
+    },
+    "pdf.open": {
+      "desc": "Open the report center, where the user can print the cellar book.",
+      "params": [],
+      "snippet": "await sdk.pdf.open();"
+    },
+    "miniApps.install": {
+      "desc": "Install a mini app from its url. Accepts a URL string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.url",
+          "type": "string"
+        }
+      ],
+      "snippet": "await sdk.miniApps.install(\"https://example.com/my-mini-app\");\nawait sdk.miniApps.install({ url: \"https://example.com/my-mini-app\" });"
+    },
+    "translations.get": {
+      "desc": "Get PLOC native translations in the user's language. With a key, return the translated string. With an array of keys, return a dictionary { key: string }. An unknown key gives defaultValue (null by default). An empty key or an empty array is rejected.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | string[]"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const title = await sdk.translations.get(\"wine.title\");\nconst texts = await sdk.translations.get([\"wine.title\", \"wine.vintage\"]);\nawait sdk.dialog.alert(texts[\"wine.vintage\"]);"
+    },
+    "miniApps.open": {
+      "desc": "Open the mini apps view, where the user can manage installed mini apps.",
+      "params": [],
+      "snippet": "await sdk.miniApps.open();"
+    },
+    "files.writeBase64": {
+      "desc": "Write a file from base64 content, overwriting any existing file. Accepts (path, base64) or an options object. Return { path, size } (null on failure). Pass the path to sdk.ui.shareFiles or sdk.network.upload.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        },
+        {
+          "name": "params.base64",
+          "type": "string"
+        }
+      ],
+      "snippet": "const file = await sdk.files.writeBase64(\"hello.txt\", btoa(\"Hello\"));\nconst same = await sdk.files.writeBase64({ path: \"hello.txt\", base64: btoa(\"Hello\") });\nreturn file;"
+    },
+    "files.writeText": {
+      "desc": "Write a text file, encoded as UTF-8 (accents are fine), overwriting any existing file. Same as sdk.files.writeBase64 without handling base64. Accepts (path, text) or an options object. Return { path, size } (null on failure).",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        },
+        {
+          "name": "params.text",
+          "type": "string"
+        }
+      ],
+      "snippet": "const file = await sdk.files.writeText(\"wines.csv\", \"name;vintage\\nChâteau Margaux;2015\\n\");\nawait sdk.ui.shareFiles(file.path);"
+    },
+    "files.readBase64": {
+      "desc": "Read a file and return its content as base64, or null if it does not exist. Intended for small files: use sdk.network.download and sdk.network.upload for large ones. Accepts a path string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        }
+      ],
+      "snippet": "const base64 = await sdk.files.readBase64(\"hello.txt\");\nreturn base64 === null ? null : atob(base64);"
+    },
+    "files.readText": {
+      "desc": "Read a text file decoded as UTF-8 (accents are fine), or null if it does not exist. Same as sdk.files.readBase64 without handling base64. Accepts a path string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        }
+      ],
+      "snippet": "const text = await sdk.files.readText(\"wines.csv\");\nreturn text === null ? null : text.split(\"\\n\").length;"
+    },
+    "files.exists": {
+      "desc": "Check whether a file exists. Accepts a path string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        }
+      ],
+      "snippet": "return await sdk.files.exists(\"hello.txt\");"
+    },
+    "files.delete": {
+      "desc": "Delete a file. Return true if the file existed. Accepts a path string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object"
+        },
+        {
+          "name": "params.path",
+          "type": "string"
+        }
+      ],
+      "snippet": "const existed = await sdk.files.delete(\"hello.txt\");\nreturn existed;"
+    },
+    "account.getInfo": {
+      "desc": "Get the account state: connected, and id, a stable anonymous user id derived from the given key (null without key or when not connected). Different keys give different ids. Accepts a key string or an options object.",
+      "params": [
+        {
+          "name": "params",
+          "type": "string | object",
+          "optional": true
+        },
+        {
+          "name": "params.key",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const info = await sdk.account.getInfo(\"my-script\");\nreturn info;"
+    },
+    "account.open": {
+      "desc": "Open the account view.",
+      "params": [],
+      "snippet": "await sdk.account.open();"
+    },
+    "app.getInfo": {
+      "desc": "Get information about the app and the system: name, version, build, platform, osVersion and locale.",
+      "params": [],
+      "snippet": "return await sdk.app.getInfo();"
+    },
+    "app.getPermissions": {
+      "desc": "Get the permissions granted to the running script: { read, write }. Check them before reading or modifying data to avoid a permission error.",
+      "params": [],
+      "snippet": "const { read, write } = await sdk.app.getPermissions();\nreturn { read, write };"
+    },
+    "storage.get": {
+      "desc": "Read a stored value. Returns the value with its original type (string, number, boolean, object, array), or defaultValue (null if omitted) when the key does not exist. Storage is shared by all scripts and synchronized with the cellar: prefix keys with your script name (e.g. \"my-script.threshold\") and prefer small, separate keys.",
+      "params": [
+        {
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "name": "defaultValue",
+          "type": "any",
+          "optional": true
+        }
+      ],
+      "snippet": "const threshold = await sdk.storage.get(\"my-script.threshold\", 5);\nreturn threshold;"
+    },
+    "storage.set": {
+      "desc": "Store a JSON-serializable value (string, number, boolean, object, array) under a key. Overwrites any existing value. undefined, functions, NaN and Infinity are rejected.",
+      "params": [
+        {
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "any"
+        }
+      ],
+      "snippet": "await sdk.storage.set(\"my-script.threshold\", 10);\nawait sdk.storage.set(\"my-script.config\", { enabled: true, tags: [\"a\", \"b\"] });"
+    },
+    "storage.has": {
+      "desc": "Check whether a key exists. Useful to tell a missing key from a stored null.",
+      "params": [
+        {
+          "name": "key",
+          "type": "string"
+        }
+      ],
+      "snippet": "return await sdk.storage.has(\"my-script.threshold\");"
+    },
+    "storage.remove": {
+      "desc": "Remove a key. Returns true if the key existed.",
+      "params": [
+        {
+          "name": "key",
+          "type": "string"
+        }
+      ],
+      "snippet": "const existed = await sdk.storage.remove(\"my-script.threshold\");\nreturn existed;"
+    },
+    "Model#save": {
+      "desc": "Save the object (create or update), then refresh it with the stored data. Available on all models except read-only ones.",
+      "params": [],
+      "snippet": "const item = new {Class}({ name: \"New {Class}\" });\nawait item.save();\nreturn item.id;"
+    },
+    "Model#delete": {
+      "desc": "Delete the object. Available on all models except read-only ones.",
+      "params": [],
+      "snippet": "const item = await {Class}.findFirst(\"NAME\");\nawait item?.delete();"
+    },
+    "Wine#save": {
+      "desc": "Save the wine (create or update).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nwine.name = wine.name + \" *\";\nawait wine.save();"
+    },
+    "Wine#delete": {
+      "desc": "Delete the wine.",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"TEST\");\nawait wine?.delete();"
+    },
+    "Wine#getCountry": {
+      "desc": "Get the country of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst c = await wine.getCountry();\nreturn c?.name;"
+    },
+    "Wine#getRegion": {
+      "desc": "Get the region of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst r = await wine.getRegion();\nreturn r?.name;"
+    },
+    "Wine#getAppellation": {
+      "desc": "Get the appellation of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst a = await wine.getAppellation();\nreturn a?.name;"
+    },
+    "Wine#getClassification": {
+      "desc": "Get the classification of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst c = await wine.getClassification();\nreturn c?.name;"
+    },
+    "Wine#getColor": {
+      "desc": "Get the color of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst c = await wine.getColor();\nreturn c?.name;"
+    },
+    "Wine#getBottleFormat": {
+      "desc": "Get the bottle format of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst f = await wine.getBottleFormat();\nreturn f?.name;"
+    },
+    "Wine#getOwner": {
+      "desc": "Get the owner of the wine, loaded on demand (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst o = await wine.getOwner();\nreturn o?.name;"
+    },
+    "Wine#getImage": {
+      "desc": "Get the image of the wine as a Document (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst image = await wine.getImage();\nreturn image?.filename;"
+    },
+    "Wine#getRacks": {
+      "desc": "Get the racks holding this wine as a Collection. Throws INVALID_PARAMS if the wine has no id.",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst racks = await wine.getRacks();\nreturn racks.map(r => r.name).toArray();"
+    },
+    "Wine#getTastingNotes": {
+      "desc": "Get the tasting notes of this wine as a Collection. Throws INVALID_PARAMS if the wine has no id.",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst notes = await wine.getTastingNotes();\nreturn notes.count;"
+    },
+    "Wine#getOrders": {
+      "desc": "Get the orders (purchases) of this wine as a Collection. Throws INVALID_PARAMS if the wine has no id.",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst orders = await wine.getOrders();\nreturn orders.count;"
+    },
+    "Wine#getCoverImage": {
+      "desc": "Get the cover image of the wine as a Document (null if none).",
+      "params": [],
+      "snippet": "const wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nconst cover = await wine.getCoverImage();\nreturn cover?.filename;"
+    },
+    "Country#createRegion": {
+      "desc": "Create a region attached to this country. Call save() on the region to store it.",
+      "params": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "snippet": "const country = await sdk.cellar.country.findFirst(\"France\");\nconst region = country.createRegion(\"New region\");\nawait region.save();\nreturn region.id;"
+    },
+    "Country#getRegions": {
+      "desc": "Get the regions of the country as a Collection.",
+      "params": [],
+      "snippet": "const country = await sdk.cellar.country.findFirst(\"France\");\nconst regions = await country.getRegions();\nreturn regions.map(r => r.name).toArray();"
+    },
+    "Region#getCountry": {
+      "desc": "Get the country of the region (null if none).",
+      "params": [],
+      "snippet": "const region = await sdk.cellar.region.findFirst(\"Bordeaux\");\nconst country = await region.getCountry();\nreturn country?.name;"
+    },
+    "Region#getAppellations": {
+      "desc": "Get the appellations of the region as a Collection.",
+      "params": [],
+      "snippet": "const region = await sdk.cellar.region.findFirst(\"Bordeaux\");\nconst appellations = await region.getAppellations();\nreturn appellations.map(a => a.name).toArray();"
+    },
+    "Region#createAppellation": {
+      "desc": "Create an appellation attached to this region. Call save() on the appellation to store it.",
+      "params": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "snippet": "const region = await sdk.cellar.region.findFirst(\"Bordeaux\");\nconst appellation = region.createAppellation(\"New appellation\");\nawait appellation.save();\nreturn appellation.id;"
+    },
+    "Appellation#getRegion": {
+      "desc": "Get the region of the appellation (null if none).",
+      "params": [],
+      "snippet": "const appellation = await sdk.cellar.appellation.findFirst(\"Margaux\");\nconst region = await appellation.getRegion();\nreturn region?.name;"
+    },
+    "Contact#getCountry": {
+      "desc": "Get the country of the vendor or owner (null if none).",
+      "params": [],
+      "snippet": "const owner = await sdk.cellar.owner.findFirst(\"NAME\");\nconst country = await owner.getCountry();\nreturn country?.name;"
+    },
+    "Order#getVendor": {
+      "desc": "Get the vendor of the order (null if none).",
+      "params": [],
+      "snippet": "const order = await sdk.cellar.order.get(\"ORDER_ID\");\nconst vendor = await order.getVendor();\nreturn vendor?.name;"
+    },
+    "Order#getWine": {
+      "desc": "Get the wine of the order (null if none).",
+      "params": [],
+      "snippet": "const order = await sdk.cellar.order.get(\"ORDER_ID\");\nconst wine = await order.getWine();\nreturn wine?.name;"
+    },
+    "TastingNotes#getWine": {
+      "desc": "Get the wine of the tasting note (null if none).",
+      "params": [],
+      "snippet": "const note = await sdk.cellar.tastingNotes.get(\"NOTE_ID\");\nconst wine = await note.getWine();\nreturn wine?.name;"
+    },
+    "TastingNotes#getImage": {
+      "desc": "Get the image of the tasting note as a Document (null if none).",
+      "params": [],
+      "snippet": "const note = await sdk.cellar.tastingNotes.get(\"NOTE_ID\");\nconst image = await note.getImage();\nreturn image?.filename;"
+    },
+    "Document#getBase64": {
+      "desc": "Get the content of the document as base64, loaded on demand.",
+      "params": [],
+      "snippet": "const doc = await sdk.cellar.document.get(\"DOC_ID\");\nconst base64 = await doc.getBase64();\nreturn base64 ? base64.length : null;"
+    },
+    "Document#loadFromURL": {
+      "desc": "Download a URL into the document (base64) and use its last segment as filename. Return the base64 or null. Call save() to store it.",
+      "params": [
+        {
+          "name": "url",
+          "type": "string"
+        }
+      ],
+      "snippet": "const doc = new Document({});\nconst base64 = await doc.loadFromURL(\"https://example.com/image.png\");\nreturn base64 ? doc.filename : \"Download failed\";"
+    },
+    "Document#loadFromFile": {
+      "desc": "Load a File or Blob into the document (base64, size, filename). Call save() to store it.",
+      "params": [
+        {
+          "name": "file",
+          "type": "File | Blob"
+        }
+      ],
+      "snippet": "const doc = new Document({});\nconst file = new File([\"Hello\"], \"hello.txt\", { type: \"text/plain\" });\nawait doc.loadFromFile(file);\nreturn doc.filename;"
+    },
+    "Rack#getRackItem": {
+      "desc": "Get the rack item at a position (row, column), or null.",
+      "params": [
+        {
+          "name": "row",
+          "type": "number"
+        },
+        {
+          "name": "column",
+          "type": "number"
+        }
+      ],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.getRackItem(0, 0);"
+    },
+    "Rack#addRackItemAt": {
+      "desc": "Get or create the rack item at a position, optionally holding a wine. Throw if the position is outside the rack. Call save() on the rack to store it.",
+      "params": [
+        {
+          "name": "row",
+          "type": "number"
+        },
+        {
+          "name": "column",
+          "type": "number"
+        },
+        {
+          "name": "wine",
+          "type": "Wine",
+          "optional": true
+        }
+      ],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nconst item = rack.addRackItemAt(0, 0);\nreturn item.row + \",\" + item.column;"
+    },
+    "Rack#findRackItemByQrCode": {
+      "desc": "Get the rack item with a QR code, or null.",
+      "params": [
+        {
+          "name": "qrCode",
+          "type": "string"
+        }
+      ],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.findRackItemByQrCode(\"QR_CODE\");"
+    },
+    "Rack#findRackItemByTag": {
+      "desc": "Get the first rack item with a tag, or null.",
+      "params": [
+        {
+          "name": "tag",
+          "type": "string"
+        }
+      ],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.findRackItemByTag(\"TAG\");"
+    },
+    "Rack#populateRackItems": {
+      "desc": "Create the missing rack items so that every position of the rack has one. Call save() on the rack to store it.",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nrack.populateRackItems();\nreturn rack.rackItems.length;"
+    },
+    "Rack#isValidPosition": {
+      "desc": "Check whether a position (row, column) is inside the rack.",
+      "params": [
+        {
+          "name": "row",
+          "type": "number"
+        },
+        {
+          "name": "column",
+          "type": "number"
+        }
+      ],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.isValidPosition(0, 0);"
+    },
+    "RackItem#consume": {
+      "desc": "Consume the wine stored in the rack item (one bottle is taken out).",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nconst item = rack.getRackItem(0, 0);\nawait item.consume();"
+    },
+    "RackItem#store": {
+      "desc": "Store a wine in the rack item. The wine must have an id.",
+      "params": [
+        {
+          "name": "wine",
+          "type": "Wine"
+        }
+      ],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nconst wine = await sdk.cellar.wine.findFirst(\"Margaux\");\nawait rack.getRackItem(0, 0).store(wine);"
+    },
+    "RackItem#markDeleted": {
+      "desc": "Mark the rack item as deleted (applied when the rack is saved).",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nrack.getRackItem(0, 0).markDeleted();\nawait rack.save();"
+    },
+    "RackItem#unmarkDeleted": {
+      "desc": "Remove the deleted mark of the rack item.",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.getRackItem(0, 0).unmarkDeleted().isDeleted();"
+    },
+    "RackItem#toggleDeleted": {
+      "desc": "Toggle the deleted mark of the rack item.",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.getRackItem(0, 0).toggleDeleted().isDeleted();"
+    },
+    "RackItem#isEmpty": {
+      "desc": "Check whether the rack item holds no wine.",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.getRackItem(0, 0).isEmpty();"
+    },
+    "RackItem#isNotEmpty": {
+      "desc": "Check whether the rack item holds a wine.",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.getRackItem(0, 0).isNotEmpty();"
+    },
+    "RackItem#isDeleted": {
+      "desc": "Check whether the rack item is marked as deleted.",
+      "params": [],
+      "snippet": "const rack = await sdk.cellar.rack.findFirst(\"NAME\");\nreturn rack.getRackItem(0, 0).isDeleted();"
+    },
+    "Collection#forEach": {
+      "desc": "Call a function for each item. Return the collection.",
+      "params": [
+        {
+          "name": "callback",
+          "type": "function"
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nwines.forEach(w => console.log(w.name));"
+    },
+    "Collection#map": {
+      "desc": "Return a new Collection with the result of a function on each item. Use toArray() to get a plain array.",
+      "params": [
+        {
+          "name": "callback",
+          "type": "function"
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.map(w => w.name).toArray();"
+    },
+    "Collection#filter": {
+      "desc": "Return a new Collection with the items for which a function returns true.",
+      "params": [
+        {
+          "name": "callback",
+          "type": "function"
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.filter(w => w.vintage >= 2015).count;"
+    },
+    "Collection#filterBy": {
+      "desc": "Return a new Collection with the items whose property (dotted path allowed) matches a value. Options: ignoreCase (boolean), mode (\"equals\" or \"startsWith\").",
+      "params": [
+        {
+          "name": "prop",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "any"
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "optional": true
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.filterBy(\"name\", \"cha\", { ignoreCase: true, mode: \"startsWith\" }).count;"
+    },
+    "Collection#find": {
+      "desc": "Get the first item whose property (dotted path allowed) equals a value, or undefined.",
+      "params": [
+        {
+          "name": "prop",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "any"
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.find(\"vintage\", 2015)?.name;"
+    },
+    "Collection#sortBy": {
+      "desc": "Return a new sorted Collection by a property (dotted path allowed). Direction is \"asc\" (default) or \"desc\"; empty values go last.",
+      "params": [
+        {
+          "name": "prop",
+          "type": "string"
+        },
+        {
+          "name": "direction",
+          "type": "string",
+          "optional": true
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.sortBy(\"vintage\", \"desc\").map(w => w.name).toArray();"
+    },
+    "Collection#at": {
+      "desc": "Get the item at an index (negative counts from the end), or undefined.",
+      "params": [
+        {
+          "name": "index",
+          "type": "number"
+        }
+      ],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.at(-1)?.name;"
+    },
+    "Collection#toArray": {
+      "desc": "Return the items as a plain array.",
+      "params": [],
+      "snippet": "const wines = await sdk.cellar.wine.getAll();\nreturn wines.toArray().length;"
+    }
+  }
+}

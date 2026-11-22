@@ -1,0 +1,35 @@
+name: CI
+
+# Pull requests to main: validate the skill, build the zip, and refuse a VERSION that is not greater
+# than the latest release and than the VERSION on main (the developer increments it by hand).
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # needed to see the existing tags
+
+      - name: Validate
+        run: scripts/validate.sh
+
+      - name: Version must be greater than the latest release and than main
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: scripts/check-version.sh
+
+      - name: Build the zip
+        run: scripts/package.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ploc-zip
+          path: dist/ploc.zip
+          if-no-files-found: error

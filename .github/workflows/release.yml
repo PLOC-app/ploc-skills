@@ -1,0 +1,56 @@
+name: Release
+
+# Merge into main: create the tag v<VERSION> and a GitHub release with ploc.zip attached.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write   # create the tag and the release
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate
+        run: scripts/validate.sh
+
+      - name: Read the version
+        id: version
+        run: echo "tag=v$(tr -d '[:space:]' < VERSION)" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if the tag already exists
+        id: exists
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::Tag ${{ steps.version.outputs.tag }} already exists, no release created."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Version must be greater than the latest release
+        if: steps.exists.outputs.exists == 'false'
+        run: scripts/check-version.sh
+
+      - name: Build the zip
+        if: steps.exists.outputs.exists == 'false'
+        run: scripts/package.sh
+
+      - name: Create the release
+        if: steps.exists.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" dist/ploc.zip \
+            --target "$GITHUB_SHA" \
+            --title "${{ steps.version.outputs.tag }}" \
+            --generate-notes
