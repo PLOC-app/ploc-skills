@@ -16,10 +16,14 @@ Mistakes to avoid when writing PLOC code.
 
 - `map` and `filter` return a **Collection**, not an array. End with `.toArray()` before `return`ing or JSON-ing it.
 - `find(param)` takes a string or an object, and returns a `Collection` (`findFirst` returns the first item or `null`).
-  - A string searches by `name`: case-insensitive, partial match (`find("grand")` finds "Château Grand-Pontet").
-  - An object is forwarded as is to the app. Tested on iOS (PLOC 7.0): only `name` is honored. Other keys
-    (`vintage`, `query`...) are **silently ignored and every item is returned**; not tested on Android.
-  - Anything else than a name search: use `getAll()` then `filter` / `filterBy` in JavaScript.
+  - `wine`, `tastingNotes` and `rack`: a string is a **search text**, matched like the app's search field
+    (`find("grand")`: case-insensitive, `find("")` returns everything), and `{ query }` is the object form.
+    `{ wineId }` restricts to one wine (see the catalog for which repositories take it). `{ name }` is still
+    accepted.
+  - Other repositories: a string searches by `name`.
+  - An object is forwarded as is to the app, which ignores the keys it does not know: **they are silently ignored and
+    every item is returned**. Only use the keys listed above.
+  - Anything else than a text search: use `getAll()` then `filter` / `filterBy` in JavaScript.
   - Anything else than a string or an object throws an `SDKError` (`INVALID_PARAMS`).
 - Useful helpers: `filterBy(prop, value, { ignoreCase, mode })`, `find(prop, value)`, `sortBy(prop, "asc" | "desc")`.
   `prop` accepts a dotted path (`"color.name"`).

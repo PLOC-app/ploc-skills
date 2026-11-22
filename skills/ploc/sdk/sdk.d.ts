@@ -144,6 +144,10 @@ declare class Repository<T extends Model> {
     /** Resolve `null` when not found. */
     get(id: string): Promise<T | null>;
     getAll(): Promise<Collection<T>>;
+    /**
+     * A string searches by name. For `wine`, `tastingNotes` and `rack` it is a search text (same as the app's search field),
+     * and `{ query }` is the object form; `tastingNotes` and `rack` also accept `{ wineId }` to restrict to one wine.
+     */
     find(param: string | SDKOptions): Promise<Collection<T>>;
     findFirst(param: string | SDKOptions): Promise<T | null>;
 }
@@ -521,7 +525,7 @@ declare abstract class Model {
     /** Resolve `null` when not found. */
     static get<T extends Model>(this: new (data?: ModelData) => T, id: string): Promise<T | null>;
     static getAll<T extends Model>(this: new (data?: ModelData) => T): Promise<Collection<T>>;
-    /** A string searches by name; an object searches by criteria. */
+    /** A string searches by name (a search text for `Wine`, `TastingNotes` and `Rack`: use `{ query }` as the object form); other objects search by criteria. */
     static find<T extends Model>(this: new (data?: ModelData) => T, param: string | SDKOptions): Promise<Collection<T>>;
     static findFirst<T extends Model>(this: new (data?: ModelData) => T, param: string | SDKOptions): Promise<T | null>;
 }
@@ -683,6 +687,12 @@ declare class Wine extends Model {
     getOwner(): Promise<Owner | null>;
     getImage(): Promise<Document | null>;
     getCoverImage(): Promise<Document | null>;
+    /** Racks holding this wine. Throws `INVALID_PARAMS` if the wine has no id. */
+    getRacks(): Promise<Collection<Rack>>;
+    /** Tasting notes of this wine. Throws `INVALID_PARAMS` if the wine has no id. */
+    getTastingNotes(): Promise<Collection<TastingNotes>>;
+    /** Orders (purchases) of this wine. Throws `INVALID_PARAMS` if the wine has no id. */
+    getOrders(): Promise<Collection<Order>>;
 }
 
 declare class Order extends Model {

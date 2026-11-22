@@ -27,6 +27,18 @@ Relations, each with an id and an async getter:
 `getCountry()`, `getRegion()`, `getAppellation()`, `getClassification()`, `getColor()`, `getBottleFormat()`,
 `getOwner()`. Writes accept a model or an id: `wine.color = color` or `wine.color = "COLOR_ID"`.
 
+The other models that point to a wine are reached with async methods, each returning a `Collection`:
+`getRacks()` (racks holding the wine), `getTastingNotes()` and `getOrders()` (purchases and consumptions). They
+throw `INVALID_PARAMS` for a wine without id. They are the same as `find({ wineId: wine.id })` on the matching
+repository.
+
+```js
+const wine = await sdk.cellar.wine.findFirst("Margaux");
+const racks = await wine.getRacks();
+const notes = await wine.getTastingNotes();
+return { racks: racks.map(r => r.name).toArray(), notes: notes.count, orders: (await wine.getOrders()).count };
+```
+
 `bottles` is the number of bottles currently in the cellar: filter on `bottles > 0` to get the wines you still own.
 
 ## Order
