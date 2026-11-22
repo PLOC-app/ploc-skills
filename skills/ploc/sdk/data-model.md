@@ -19,7 +19,9 @@ Region → Country      Appellation → Region
 
 Main fields: `name`, `vintage`, `bottles` (number of bottles in the cellar), `note`, `isFavorite`, `degree`,
 `estimatePrice`, `comments`, `cuvee`, `tags`, `grapes`, `reference`, `latitude`/`longitude`.
-Periods: `apogee`, `drinkPeriod`, `service` (`Period` with numeric `from` and `to`).
+Periods (`Period` with numeric `from` and `to`, or `null`/missing when not set): `apogee` and `drinkPeriod`
+(drinking window), and `service`, the **serving temperature range in °C** (for example `{ from: 9, to: 10 }` for a
+champagne, `{ from: 16, to: 18 }` for a red).
 
 Relations, each with an id and an async getter:
 `getCountry()`, `getRegion()`, `getAppellation()`, `getClassification()`, `getColor()`, `getBottleFormat()`,

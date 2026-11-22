@@ -15,10 +15,12 @@ Mistakes to avoid when writing PLOC code.
 | `for (const w of wines)` | works (iterable) |
 
 - `map` and `filter` return a **Collection**, not an array. End with `.toArray()` before `return`ing or JSON-ing it.
-- `find(param)` takes a string (searches by `name`) or an object of criteria forwarded as is to the app: the criteria
-  an object can use are not described by the SDK and may differ between iOS and Android. Prefer `getAll()` then
-  `filterBy` / `filter` in JavaScript for anything beyond a name search. `findFirst` returns `null` when nothing
-  matches.
+- `find(param)` takes a string or an object, and returns a `Collection` (`findFirst` returns the first item or `null`).
+  - A string searches by `name`: case-insensitive, partial match (`find("grand")` finds "Château Grand-Pontet").
+  - An object is forwarded as is to the app. Tested on iOS (PLOC 7.0): only `name` is honored. Other keys
+    (`vintage`, `query`...) are **silently ignored and every item is returned**; not tested on Android.
+  - Anything else than a name search: use `getAll()` then `filter` / `filterBy` in JavaScript.
+  - Anything else than a string or an object throws an `SDKError` (`INVALID_PARAMS`).
 - Useful helpers: `filterBy(prop, value, { ignoreCase, mode })`, `find(prop, value)`, `sortBy(prop, "asc" | "desc")`.
   `prop` accepts a dotted path (`"color.name"`).
 - Methods such as `reduce`, `some`, `slice` do not exist: call `.toArray()` first.

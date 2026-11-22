@@ -13,31 +13,37 @@ One skill, [`ploc`](skills/ploc/SKILL.md), covers:
 
 ## Install
 
-1. Download this repository: **Code → Download ZIP** on GitHub, or
+### Option 1: download the latest release (recommended)
 
-   ```bash
-   git clone https://github.com/PLOC-app/ploc-skills.git
-   ```
+1. Download [`ploc.zip`](https://github.com/PLOC-app/ploc-skills/releases/latest/download/ploc.zip) (always the latest
+   release).
+2. Unzip it: you get a **`ploc`** folder.
+3. Put that folder in the skills folder of your tool (table below).
 
-2. Copy the **`skills/ploc`** folder into the skills folder of your tool.
+Example for Claude Code:
+
+```bash
+unzip ploc.zip -d ~/.claude/skills/
+```
+
+### Option 2: with git
+
+```bash
+git clone https://github.com/PLOC-app/ploc-skills.git
+cp -R ploc-skills/skills/ploc ~/.claude/skills/
+```
+
+Pull and copy again to update.
+
+### Skills folder by tool
 
 | Tool | Skills folder |
 |---|---|
 | **Claude Code** (terminal, desktop app "Code" tab) | `~/.claude/skills/` for all projects, or `.claude/skills/` in one project |
 | **OpenAI Codex** | `.agents/skills/` in your project (see the [Codex documentation](https://developers.openai.com/codex/skills)) |
 | **Gemini CLI** | see the [Gemini CLI skills documentation](https://geminicli.com/docs/cli/skills/) |
-| **Claude chat** (claude.ai, desktop "Chat" tab) | import `ploc.zip` in the settings (download it from the [releases](https://github.com/PLOC-app/ploc-skills/releases/latest)) |
+| **Claude chat** (claude.ai, desktop "Chat" tab) | import `ploc.zip` as is in the settings, do not unzip it |
 | Other tools that support `SKILL.md` | see their documentation: the format is the open [Agent Skills](https://agentskills.io/) standard |
-
-The latest `ploc.zip` is always available at
-<https://github.com/PLOC-app/ploc-skills/releases/latest/download/ploc.zip>. It contains the `ploc` folder: unzip it
-into your tool's skills folder.
-
-Example for Claude Code:
-
-```bash
-cp -R skills/ploc ~/.claude/skills/
-```
 
 Then **start a new session**: skills are loaded when a session starts.
 

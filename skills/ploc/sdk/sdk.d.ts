@@ -29,7 +29,16 @@ type SDKErrorCode =
     | "INTERNAL_ERROR"
     | (string & {});
 
-/** Error thrown (rejected) by every SDK call. Not exposed as a global at runtime. */
+/**
+ * Error thrown (rejected) by SDK calls, so always `await` them inside `try` / `catch`.
+ * `code` tells why: `INVALID_PARAMS` (missing or malformed argument, checked before anything is sent),
+ * `TIMEOUT`, `NOT_FOUND`, `NO_BRIDGE` / `NO_SDK` (outside the PLOC app) or `INTERNAL_ERROR`.
+ *
+ * Not every failure throws: some methods resolve `null` when the app returns nothing
+ * (see "Resolve `null`" on each method). Check for `null` as well as catching.
+ *
+ * Not exposed as a global at runtime.
+ */
 interface SDKError extends Error {
     readonly name: "SDKError";
     readonly code: SDKErrorCode;
@@ -117,8 +126,11 @@ declare class UIService {
     /** Open the native share sheet. A string or an array is a shortcut for `shareFiles`. */
     share(params: string | string[] | ShareParams): Promise<unknown>;
     /** Share local files by path. */
+    /** @throws {SDKError} `INVALID_PARAMS` if no path is given. */
     shareFiles(params: string | string[]): Promise<unknown>;
+    /** @throws {SDKError} `INVALID_PARAMS` if `base64` is missing or empty. */
     shareImage(params: { base64: string }): Promise<unknown>;
+    /** @throws {SDKError} `INVALID_PARAMS` if the text is missing or empty. */
     shareText(params: string | { text: string }): Promise<unknown>;
     openPop(params?: SDKOptions): Promise<unknown>;
     /** iOS only. */
@@ -188,10 +200,20 @@ interface HttpResponse {
 }
 
 declare class NetworkService {
+    /**
+     * Resolve `null` on failure.
+     * @throws {SDKError} `INVALID_PARAMS` without `url` or with an invalid `timeout`; `TIMEOUT` when it expires.
+     */
     fetchBase64(params: string | ({ url: string } & TimeoutOption)): Promise<{ base64: string } | null>;
-    /** Stream a URL to a local file. Resolve `null` on failure. */
+    /**
+     * Stream a URL to a local file. Resolve `null` on failure.
+     * @throws {SDKError} `INVALID_PARAMS` without `url`.
+     */
     download(params: string | { url: string; headers?: Record<string, string> }): Promise<SDKFile | null>;
-    /** Default method is GET. `body` must be a string. Resolve `null` on failure. */
+    /**
+     * Default method is GET. `body` must be a string. Resolve `null` on failure.
+     * @throws {SDKError} `INVALID_PARAMS` without `url`, with a non-string `method` or `body`, or an invalid `timeout`; `TIMEOUT` when it expires.
+     */
     request(
         params: string | ({
             url: string;
@@ -200,7 +222,10 @@ declare class NetworkService {
             body?: string | null;
         } & TimeoutOption),
     ): Promise<HttpResponse | null>;
-    /** Stream a local file to a URL (default method PUT). */
+    /**
+     * Stream a local file to a URL (default method PUT). Resolve `null` on failure.
+     * @throws {SDKError} `INVALID_PARAMS` without `path` or `url`.
+     */
     upload(params: {
         path: string;
         url: string;
@@ -240,6 +265,7 @@ declare class DialogService {
     confirm(params: string | (DialogMessageParams & { cancelLabel?: string })): Promise<boolean>;
     /** Resolve the entered text, or `null` if cancelled. */
     prompt(params: string | (DialogMessageParams & { placeholder?: string; defaultValue?: string })): Promise<string | null>;
+    /** @throws {SDKError} `INVALID_PARAMS` if the text is missing or empty. */
     toast(params: string | { text: string }): Promise<void>;
     /** Resolve the chosen item, or `null` if cancelled. */
     pick(params: Array<string | PickItem> | PickParams): Promise<PickResult | null>;
@@ -281,6 +307,7 @@ declare class HapticsService {
 }
 
 declare class ClipboardService {
+    /** @throws {SDKError} `INVALID_PARAMS` without text. */
     copy(params: string | { text: string }): Promise<void>;
 }
 
@@ -348,13 +375,19 @@ declare class TranslationsService {
 }
 
 declare class FilesService {
+    /** Resolve `null` on failure. @throws {SDKError} `INVALID_PARAMS` without `path` or `base64`. */
     writeBase64(path: string, base64: string): Promise<SDKFile | null>;
     writeBase64(params: { path: string; base64: string }): Promise<SDKFile | null>;
+    /** Resolve `null` on failure. @throws {SDKError} `INVALID_PARAMS` without `path` or `text`. */
     writeText(path: string, text: string): Promise<SDKFile | null>;
     writeText(params: { path: string; text: string }): Promise<SDKFile | null>;
+    /** Resolve `null` when the file cannot be read. @throws {SDKError} `INVALID_PARAMS` without `path`. */
     readBase64(params: string | { path: string }): Promise<string | null>;
+    /** Resolve `null` when the file cannot be read. @throws {SDKError} `INVALID_PARAMS` without `path`. */
     readText(params: string | { path: string }): Promise<string | null>;
+    /** @throws {SDKError} `INVALID_PARAMS` without `path`. */
     exists(params: string | { path: string }): Promise<boolean>;
+    /** @throws {SDKError} `INVALID_PARAMS` without `path`. */
     delete(params: string | { path: string }): Promise<boolean>;
 }
 
@@ -388,6 +421,7 @@ declare class AppService {
 declare class StorageService {
     /** Values are JSON-serialized. Resolve `defaultValue` when the key does not exist. */
     get<T = unknown>(key: string, defaultValue?: T | null): Promise<T | null>;
+    /** @throws {SDKError} `INVALID_PARAMS` if the key is empty or longer than 128 characters, or the value is not JSON-serializable. */
     set(key: string, value: unknown): Promise<void>;
     has(key: string): Promise<boolean>;
     /** Resolve `true` if the key existed. */
@@ -606,6 +640,7 @@ declare class Wine extends Model {
     observintoire?: unknown;
     apogee?: Period;
     drinkPeriod?: Period;
+    /** Serving temperature range in °C (`from` = min, `to` = max). Not a date range, unlike `apogee` and `drinkPeriod`. */
     service?: Period;
     orders?: Order[];
     documents?: Document[];
